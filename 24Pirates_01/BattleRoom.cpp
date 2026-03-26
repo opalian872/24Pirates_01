@@ -1,9 +1,9 @@
-//BattleRoom.cpp
+﻿//BattleRoom.cpp
 #include <iostream>
 #include "BattleRoom.h"
 
 
-BattleRoom::BattleRoom(): playerTurn(true), isRunning(true), ui(BattleUI())  //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies)
+BattleRoom::BattleRoom(): playerTurn(true), isRunning(true), ui(BattleUI(0))  //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies)
 {
 	//더미용 enemy
 	enemies.push_back({ "Goblin", 100, 100, 10, 10, 50, 50 });

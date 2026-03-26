@@ -1,7 +1,8 @@
-//GameManager.h
+﻿//GameManager.h
 #pragma once
 //#include "Player.h"
 #include "StartMenuUI.h"
+#include "BattleUI.h"
 #include <iostream>
 
 enum class GameState

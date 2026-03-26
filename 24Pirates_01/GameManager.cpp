@@ -1,4 +1,4 @@
-//GameManager.cpp
+﻿//GameManager.cpp
 
 #include <iostream>
 #include <limits>
@@ -65,7 +65,7 @@ void GameManager::RunStartMenu() // 여기서 StartingUI 를 불러옵니다.
 	std::cin >> inputName;
 	startMenuUI.ClearScreen();
 	startMenuUI.Render(inputName);
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //전에 입력 받았으므로
+    std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n'); //전에 입력 받았으므로
 	WaitForEnter();
 	currentState = GameState::InBattle;
 	roomCount++;
@@ -73,9 +73,10 @@ void GameManager::RunStartMenu() // 여기서 StartingUI 를 불러옵니다.
 void GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. player와 vector<Enemy>, cardDatabase를 가지고 들어갈 거 같습니다.
 {
 	std::cout << "Current Room: " << roomCount << " Battle has begun!" << std::endl;
-	if (roomCount != 10)
+    BattleUI battleUI = BattleUI(roomCount);
+    if (roomCount != 10)
 	{
-		std::cout << "Battle has been won!" << std::endl;
+        battleUI.Render();
 		roomCount++;
 		WaitForEnter();
 	}
