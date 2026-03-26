@@ -1,7 +1,8 @@
 //GameManager.h
 #pragma once
 //#include "Player.h"
-//#include "
+#include "StartMenuUI.h"
+#include <iostream>
 
 enum class GameState
 {
@@ -16,6 +17,7 @@ class GameManager
 {
 private:
 	GameState currentState;
+	StartMenuUI startMenuUI;
 	int roomCount;
 	bool isRunning;
 	//Player myPlayer; << GameManager가 플레이어를 들고 있는 형태로 이렇게 구현하려고 합니다.
@@ -30,5 +32,6 @@ public:
 	void RunShopRoom();
 	void RunGameOver();
 	void RunClear();
+	void WaitForEnter();
 };
 

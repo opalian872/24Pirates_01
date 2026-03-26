@@ -1,6 +1,7 @@
 //GameManager.cpp
 
 #include <iostream>
+#include <limits>
 #include "GameManager.h"
 
 GameManager::GameManager() :currentState(GameState::Start), roomCount(0), isRunning(true)
@@ -59,7 +60,13 @@ void GameManager::GenerateRoom()
 
 void GameManager::RunStartMenu() // 여기서 StartingUI 를 불러옵니다.
 {
-	std::cout << "Game Has Started!" << std::endl;
+	std::string inputName;
+	startMenuUI.Render();
+	std::cin >> inputName;
+	startMenuUI.ClearScreen();
+	startMenuUI.Render(inputName);
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //전에 입력 받았으므로
+	WaitForEnter();
 	currentState = GameState::InBattle;
 	roomCount++;
 }
@@ -70,6 +77,7 @@ void GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. pl
 	{
 		std::cout << "Battle has been won!" << std::endl;
 		roomCount++;
+		WaitForEnter();
 	}
 	else
 	{
@@ -81,6 +89,7 @@ void GameManager::RunShopRoom() //여기서 ShopRoom을 불러옵니다
 {
 	std::cout << "Current Room: " << roomCount << " In Shop!" << std::endl;
 	std::cout << "Shopping ended." << std::endl;
+	WaitForEnter();
 	roomCount++;
 }
 void GameManager::RunGameOver()//여기서 Game Over 스크린을 불러옵니다
@@ -92,4 +101,11 @@ void GameManager::RunClear() //여기서 Clear 스크린을 불러옵니다
 {
 	std::cout << "Clear!" << std::endl;
 	isRunning = false;
+}
+
+void GameManager::WaitForEnter()
+{
+	std::cout << "Press Enter to Proceed";
+	//std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 전에 입력 받았을 때만
+	std::cin.get();
 }
