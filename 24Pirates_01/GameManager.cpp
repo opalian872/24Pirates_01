@@ -3,6 +3,7 @@
 #include <iostream>
 #include <limits>
 #include "GameManager.h"
+#include "ShopRoom.h"
 
 GameManager::GameManager() :currentState(GameState::Start), roomCount(0), isRunning(true)
 {
@@ -88,8 +89,10 @@ void GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. pl
 }
 void GameManager::RunShopRoom() //여기서 ShopRoom을 불러옵니다
 {
-	std::cout << "Current Room: " << roomCount << " In Shop!" << std::endl;
-	std::cout << "Shopping ended." << std::endl;
+    ShopRoom shopRoom(roomCount);
+    shopRoom.ShowMenu();
+
+
 	WaitForEnter();
 	roomCount++;
 }

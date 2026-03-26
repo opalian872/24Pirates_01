@@ -127,12 +127,14 @@
     <ClCompile Include="BattleUI.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ShopRoom.cpp" />
     <ClCompile Include="StartMenuUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleRoom.h" />
     <ClInclude Include="BattleUI.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="ShopRoom.h" />
     <ClInclude Include="StartMenuUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
