@@ -7,69 +7,78 @@
 BattleRoom::BattleRoom(int roomCount, Deck* playerDeck): roomCount(roomCount), playerDeck(playerDeck), playerTurn(true), isRunning(true), battleUI(roomCount)  //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies) Deck 포인터 추가
 {
     //더미용 enemy
-	enemies.push_back({ "Goblin", 100, 100, 10, 10, 50, 50 });
-	enemies.push_back({ "Dragon", 500, 500, 50, 20, 500, 500 });
+	enemies.push_back({ "Goblin", 1, 1, 1, 1, 1, 1 });
+	enemies.push_back({ "Dragon", 1, 1, 1, 1, 1, 1 });
+    enemies.push_back({ "KyeongHo Park", 1, 1, 1, 1, 1, 1 });
 }
 
 int BattleRoom::Run() //지금 당장은 더미입니다.
 //0, 1, 2 int 리턴값으로 방 클리어, 게임 오버, 게임 전체 클리어 표시할 예정입니다
 {
-    if (roomCount != 10)
-    {
-        battleUI.Render();
+    PackageUIData();
+    battleUI.Render(data);
 
-        if (playerDeck != nullptr)
-        {
-            std::cout << "\n=== My Cards ===\n";
 
-            if (playerDeck->getCardCount() == 0)
-            {
-                std::cout << "Deck is empty.\n";
-            }
-            else
-            {
-                for (int i = 0; i < playerDeck->getCardCount(); i++)
-                {
-                    Card* card = playerDeck->getCard(i);
 
-                    if (card != nullptr)
-                    {
-                        std::cout << "[" << i + 1 << "] "
-                            << card->getName()
-                            << " | "
-                            << card->getEffectText()
-                            << "\n";
-                    }
-                }
-            }
-        }
-        else
-        {
-            std::cout << "\nDeck is not connected.\n";
-        }
 
-        WaitForEnter();
-        return 0;
-    }
-    else
-    {
-        std::random_device rd;//1 or 2 랜덤하게
-        int randomClear = (rd() % 2);
-        if (randomClear == 0)
-        {
-            battleUI.Render();
-            std::cout << "Current Room: " << roomCount << " Battle has ended. You Lost!" << std::endl;
-            WaitForEnter();
-            return 1;
-        }
-        else
-        {
-            battleUI.Render();
-            std::cout << "Current Room: " << roomCount << " Battle has ended. You Cleared!" << std::endl;
-            WaitForEnter();
-            return 2;
-        }
-    }
+    return 0;
+
+    //if (roomCount != 10)
+    //{
+    //    battleUI.Render();
+
+    //    if (playerDeck != nullptr)
+    //    {
+    //        std::cout << "\n=== My Cards ===\n";
+
+    //        if (playerDeck->getCardCount() == 0)
+    //        {
+    //            std::cout << "Deck is empty.\n";
+    //        }
+    //        else
+    //        {
+    //            for (int i = 0; i < playerDeck->getCardCount(); i++)
+    //            {
+    //                Card* card = playerDeck->getCard(i);
+
+    //                if (card != nullptr)
+    //                {
+    //                    std::cout << "[" << i + 1 << "] "
+    //                        << card->getName()
+    //                        << " | "
+    //                        << card->getEffectText()
+    //                        << "\n";
+    //                }
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        std::cout << "\nDeck is not connected.\n";
+    //    }
+
+    //    WaitForEnter();
+    //    return 0;
+    //}
+    //else
+    //{
+    //    std::random_device rd;//1 or 2 랜덤하게
+    //    int randomClear = (rd() % 2);
+    //    if (randomClear == 0)
+    //    {
+    //        battleUI.Render();
+    //        std::cout << "Current Room: " << roomCount << " Battle has ended. You Lost!" << std::endl;
+    //        WaitForEnter();
+    //        return 1;
+    //    }
+    //    else
+    //    {
+    //        battleUI.Render();
+    //        std::cout << "Current Room: " << roomCount << " Battle has ended. You Cleared!" << std::endl;
+    //        WaitForEnter();
+    //        return 2;
+    //    }
+    //}
 
 
 
@@ -97,7 +106,7 @@ void BattleRoom::Reward()
 	//   totalExp +=enemy->killExp;
 	//   totalGold +=enemy->killGold;
 	//}
-	for (const Enemy& enemy : enemies)
+	for (const DummyEnemy& enemy : enemies)
 	{
 		totalExp += enemy.killExp;
 		totalGold += enemy.killGold;
@@ -132,4 +141,17 @@ void BattleRoom::WaitForEnter()
     std::cout << "Press Enter to Proceed";
     //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 전에 입력 받았을 때만
     std::cin.get();
+}
+
+void BattleRoom::PackageUIData()
+{
+    data.enemies = &enemies;
+    data.playerName = player.name;
+    data.playerCurrentHealth = player.currentHealth;
+    data.playerMaxHealth = player.maxHealth;
+    data.playerAttack = player.attack;
+    data.playerDefense = player.defense;
+    data.playerDeck = playerDeck;
+
+    return;
 }

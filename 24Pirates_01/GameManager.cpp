@@ -10,6 +10,8 @@ GameManager::GameManager() :currentState(GameState::Start), roomCount(0), isRunn
     playerDeck.addCardByID(cardDatabase, CardID::Strike);
     playerDeck.addCardByID(cardDatabase, CardID::Heal);
     playerDeck.addCardByID(cardDatabase, CardID::Whirlwind);
+    playerDeck.addCardByID(cardDatabase, CardID::Strike);
+    playerDeck.addCardByID(cardDatabase, CardID::Heal);
 }
 
 void GameManager::Run()
@@ -34,6 +36,7 @@ void GameManager::Run()
             }
             else
             {
+                roomCount++;
                 GenerateRoom();
             }
             break;
@@ -88,7 +91,6 @@ int GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. pla
     int clearState;
     BattleRoom battleRoom(roomCount, &playerDeck);
     clearState = battleRoom.Run();
-    roomCount++;
     return clearState; // clearState 가 0이면 일반방 클리어, 1이면 GameOver, 2이면 Clear
 }
 void GameManager::RunShopRoom() //여기서 ShopRoom을 불러옵니다
