@@ -4,21 +4,26 @@
 #include <windows.h>
 #include <vector>
 #include <string>
+#include "ShopManager.h"
 
 class Card;
 
+// 상점 화면 출력과 입력 처리를 담당하는 클래스
 class ShopRoom
 {
 private:
     int roomCount;
     int consoleWidth;
     int consoleHeight;
+    ShopManager& shopManager;
 
 public:
-    ShopRoom(int roomCount);
+    ShopRoom(int roomCount, ShopManager& shopManager);
 
     int GetConsoleWidth();
     int GetConsoleHeight();
+    
+
     void ClearScreen();
 
     void ShowMenu();
@@ -30,6 +35,20 @@ public:
     void ExitShop();
 
 
-    /*void PrintCardGroupHorizontal(const std::vector<Card*>& cards, int startIndex, int endIndex);
-    void PrintShopCards(const std::vector<Card*>& cards);*/
+    
+    // 카드가 있는 슬롯의 박스 출력 문자열을 생성
+    std::vector<std::string> MakeCardBoxLines(int cardNumber, const ShopCardData& card);
+
+    // 비어 있는 슬롯의 박스 출력 문자열을 생성
+    std::vector<std::string> MakeEmptyCardBoxLines(int cardNumber);
+
+    // 카드 여러 장을 가로 방향으로 나란히 출력
+    void PrintCardGroupHorizontal(const std::vector<ShopCardData>& cards, int startIndex, int endIndex);
+
+    // 상점 10칸 카드를 2줄로 나눠 출력
+    void PrintShopCards(const std::vector<ShopCardData>& cards);
+
+    // 현재 플레이어 덱 목록을 출력
+    void PrintDeckCards();
+
 };

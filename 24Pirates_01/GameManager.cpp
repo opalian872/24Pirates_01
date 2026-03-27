@@ -4,6 +4,7 @@
 #include <limits>
 #include "GameManager.h"
 #include "ShopRoom.h"
+#include "ShopManager.h"
 
 GameManager::GameManager() :currentState(GameState::Start), roomCount(0), isRunning(true)
 {
@@ -93,12 +94,12 @@ int GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. pla
 }
 void GameManager::RunShopRoom() //여기서 ShopRoom을 불러옵니다
 {
-    ShopRoom shopRoom(roomCount);
+    ShopManager shopManager(cardDatabase, playerDeck);
+    ShopRoom shopRoom(roomCount, shopManager);
     shopRoom.ShowMenu();
 
-
-	WaitForEnter();
-	roomCount++;
+    WaitForEnter();
+    roomCount++;
 }
 void GameManager::RunGameOver()//여기서 Game Over 스크린을 불러옵니다
 {
