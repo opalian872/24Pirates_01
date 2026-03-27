@@ -8,12 +8,14 @@ class Deck;
 struct DummyEnemy;
 
 
-enum class UIState
+//어떤 UI를 표시할 것인지 표시해주기
+enum class BattleUIState
 {
     Default,
     ChooseCard,
     ChooseCardTarget,
-    EnemyTurn
+    CheckDeck,
+    EnemyTurn,
 };
 
 struct UIData

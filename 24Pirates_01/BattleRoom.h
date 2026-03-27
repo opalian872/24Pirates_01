@@ -31,6 +31,7 @@ struct DummyPlayer
 };
 
 
+
 class BattleRoom
 {
 private:
@@ -43,6 +44,7 @@ private:
     const int roomCount;
     Deck* playerDeck; //포인터 추가
     UIData data; //UI에 넘겨줄 데이터 묶음
+    BattleUIState battleUIState; // 어떤 화면을 렌더링할지 정해주기
 	//여기서부턴 테스트용 더미데이터입니다.
 	DummyPlayer player = { "ParkKyeongHo", 100, 200, 30, 30 };
 	std::vector<DummyEnemy> enemies;

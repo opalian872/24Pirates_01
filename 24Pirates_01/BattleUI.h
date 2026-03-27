@@ -12,7 +12,7 @@ private:
 public:
 	BattleUI(int roomCount);
     void ClearScreen();
-	void Render(const UIData& data);
+	void Render(const UIData& data, BattleUIState battleUIState);
     int GetConsoleWidth();
     int GetConsoleHeight();
     void RenderHeader(const UIData& data);

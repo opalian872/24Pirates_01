@@ -4,19 +4,21 @@
 #include <random> //현재는 10번 방 클리어 or 실패 나타내기 위해 쓴 랜덤함수.
 
 
-BattleRoom::BattleRoom(int roomCount, Deck* playerDeck): roomCount(roomCount), playerDeck(playerDeck), playerTurn(true), isRunning(true), battleUI(roomCount)  //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies) Deck 포인터 추가
+BattleRoom::BattleRoom(int roomCount, Deck* playerDeck): roomCount(roomCount), playerDeck(playerDeck),
+playerTurn(true), isRunning(true), battleUI(roomCount), battleUIState(BattleUIState::Default)
+//원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies) Deck 포인터 추가
 {
     //더미용 enemy
 	enemies.push_back({ "Goblin", 1, 1, 1, 1, 1, 1 });
 	enemies.push_back({ "Dragon", 1, 1, 1, 1, 1, 1 });
-    enemies.push_back({ "KyeongHo Park", 1, 1, 1, 1, 1, 1 });
+    //enemies.push_back({ "KyeongHo Park", 1, 1, 1, 1, 1, 1 });
 }
 
 int BattleRoom::Run() //지금 당장은 더미입니다.
 //0, 1, 2 int 리턴값으로 방 클리어, 게임 오버, 게임 전체 클리어 표시할 예정입니다
 {
     PackageUIData();
-    battleUI.Render(data);
+    battleUI.Render(data, battleUIState);
     WaitForEnter();
 
 

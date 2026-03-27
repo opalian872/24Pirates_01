@@ -23,7 +23,7 @@ void BattleUI::ClearScreen()
 #endif
 }
 
-void BattleUI::Render(const UIData& data)
+void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
 {
     ClearScreen();
     std::cout << " [Room " << roomCount << "] [Battle] Ruined Dungeon\n\n";
