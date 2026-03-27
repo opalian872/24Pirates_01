@@ -1,26 +1,13 @@
-<<<<<<< HEAD
 ﻿// ShopRoom.cpp
+
+#include "ShopRoom.h"
+#include "Card.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <windows.h>
-
-#include "ShopRoom.h"
-//#include "Card.h"
-
-
-
-
-ShopRoom::ShopRoom(int roomCount) : roomCount(roomCount)
-=======
-﻿#include "ShopRoom.h"
-#include "Card.h"
-#include <iostream>
-#include <vector>
-#include <string>
 #include <limits>
-#include <windows.h>
 
 // 문자열이 너무 길면 자르고, 짧으면 공백을 채워서 고정 길이로 맞춤
 static std::string FitToWidth(const std::string& text, int width)
@@ -93,16 +80,12 @@ static std::vector<std::string> WrapText(const std::string& text, int width, int
 // 상점 화면 객체를 만들고 콘솔 크기를 저장
 ShopRoom::ShopRoom(int roomCount, ShopManager& shopManager)
     : roomCount(roomCount), shopManager(shopManager)
->>>>>>> Shop
 {
     consoleWidth = GetConsoleWidth();
     consoleHeight = GetConsoleHeight();
 }
 
-<<<<<<< HEAD
-=======
 // 현재 콘솔 창의 너비를 반환
->>>>>>> Shop
 int ShopRoom::GetConsoleWidth()
 {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -110,10 +93,6 @@ int ShopRoom::GetConsoleWidth()
     return csbi.srWindow.Right - csbi.srWindow.Left + 1;
 }
 
-<<<<<<< HEAD
-=======
-// 현재 콘솔 창의 높이를 반환
->>>>>>> Shop
 int ShopRoom::GetConsoleHeight()
 {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -121,10 +100,7 @@ int ShopRoom::GetConsoleHeight()
     return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 }
 
-<<<<<<< HEAD
-=======
 // 콘솔 화면을 지움
->>>>>>> Shop
 void ShopRoom::ClearScreen()
 {
 #ifdef _WIN32
@@ -134,54 +110,6 @@ void ShopRoom::ClearScreen()
 #endif
 }
 
-<<<<<<< HEAD
-
-
-
-
-void ShopRoom::ShowMenu()
-{
-    int num = 0;
-    bool ShopMenu = true;
-
-    while (ShopMenu)
-    {
-
-
-        ClearScreen();
-
-        std::cout << "[Room " << roomCount << "] [Shop] [General]\n";
-        std::cout << "My Deck: 15/20\n\n";
-
-        std::cout << std::string(consoleWidth - 1, '=') << '\n';        //카드 진열 목록 수정해야 함
-        std::cout << "+----------------------------+  +----------------------------+  +----------------------------+  +----------------------------+  +----------------------------+\n";
-        std::cout << "| [1]                        |  | [2]                        |  | [3]                        |  | [4]                        |  | [5]                        |\n";
-        std::cout << "| Strike                     |  | Heal                       |  | Defense Boost              |  | Attack Boost               |  | Double Hit                 |\n";
-        std::cout << "+----------------------------+  +----------------------------+  +----------------------------+  +----------------------------+  +----------------------------+\n";
-        std::cout << "| Type: Active               |  | Type: Active               |  | Type: Passive              |  | Type: Passive              |  | Type: Passive              |\n";
-        std::cout << "| Target: SingleEnemy        |  | Target: Self               |  | Target: Self               |  | Target: Self               |  | Target: SingleEnemy        |\n";
-        std::cout << "|                            |  |                            |  |                            |  |                            |  |                            |\n";
-        std::cout << "| Description                |  | Description                |  | Description                |  | Description                |  | Description                |\n";
-        std::cout << "+----------------------------+  +----------------------------+  +----------------------------+  +----------------------------+  +----------------------------+\n";
-        std::cout << "| Deal 12 damage to one e... |  | Recover 10 HP              |  | Gain +3 defense for 3 t... |  | Gain +2 attack for 1 turn  |  | Hit one enemy 2 times w... |\n";
-        std::cout << "| y                          |  |                            |  | s                          |  |                            |  | 70 percent attack          |\n";
-        std::cout << "|                            |  |                            |  |                            |  |                            |  |                            |\n";
-        std::cout << "|                            |  |                            |  |                            |  |                            |  |                            |\n";
-        std::cout << "|                            |  |                            |  |                            |  |                            |  |                            |\n";
-        std::cout << "+----------------------------+  +----------------------------+  +----------------------------+  +----------------------------+  +----------------------------+\n";
-        std::cout << std::string(consoleWidth - 1, '=') << '\n';        //카드 진열 목록 수정해야 함
-        std::cout << "Commands:\n";
-        std::cout << "[1]: BuyCard\n";
-        std::cout << "[2]: RemoveCard\n";
-        std::cout << "[3]: RandomRemove\n";
-        std::cout << "[4]: ShopReset\n";
-        std::cout << "[5]: ExitShop\n";
-        std::cout << "\n\nChoose:: ";
-
-        std::cin >> num;
-        switch (num)
-=======
-// 카드가 있는 슬롯의 박스 문자열을 생성
 std::vector<std::string> ShopRoom::MakeCardBoxLines(int cardNumber, const ShopCardData& card)
 {
     const int innerWidth = 28;
@@ -302,7 +230,7 @@ void ShopRoom::PrintDeckCards()
     }
 }
 
-// 상점 화면과 메뉴를 반복 출력하고 입력을 처리
+
 void ShopRoom::ShowMenu()
 {
     int choice = 0;
@@ -337,7 +265,6 @@ void ShopRoom::ShowMenu()
         }
 
         switch (choice)
->>>>>>> Shop
         {
         case 1:
             BuyCard();
@@ -353,48 +280,6 @@ void ShopRoom::ShowMenu()
             break;
         case 5:
             ExitShop();
-<<<<<<< HEAD
-            ShopMenu = false;
-            break;
-        default:
-            std::cout << "Wrong Number.\n";
-            break;
-        }
-
-        if (ShopMenu)
-        {
-            std::cout << "\nPress Enter to Proceed";
-            std::cin.ignore(10000, '\n');
-            std::cin.get();
-        }
-
-    }
-}
-
-void ShopRoom::BuyCard()
-{
-    std::cout << "Please choose the card you want to buy.\n";
-}
-
-void ShopRoom::RemoveCard()
-{
-    std::cout << "Please choose the card you want to remove.\n";
-}
-
-void ShopRoom::RemoveRandomCard()
-{
-    std::cout << "Remove the card at random.\n";
-}
-
-void ShopRoom::ResetShop()
-{
-    std::cout << "Reset the store.\n";
-}
-
-void ShopRoom::ExitShop()
-{
-    std::cout << "leaving the store.\n";
-=======
             isShopping = false;
             break;
         default:
@@ -498,5 +383,4 @@ void ShopRoom::ResetShop()
 void ShopRoom::ExitShop()
 {
     std::cout << "\nExiting shop.\n";
->>>>>>> Shop
 }
