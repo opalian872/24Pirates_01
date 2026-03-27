@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-class Enemy
+struct Enemy
 {
 public:
     void takeDamage(int damage) {}

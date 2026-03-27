@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-class Player
+struct Player
 {
 public:
     void heal(int amount) {}

@@ -71,10 +71,10 @@
     <ClInclude Include="Deck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="PlayerDummy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="EnemyDummy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

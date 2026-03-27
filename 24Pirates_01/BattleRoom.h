@@ -5,7 +5,7 @@
 #include "BattleUI.h"
 //#include "Player.h"
 //#include "Enemy.h"
-//#include "CardDatabase.h"
+#include "Deck.h" //Deck 헤더 
 
 
 
@@ -40,11 +40,12 @@ private:
 	bool playerTurn = true;
 	bool isRunning = true;
     const int roomCount;
+    Deck* playerDeck; //포인터 추가
 	//여기서부턴 테스트용 더미데이터입니다.
 	Player player = { "ParkKyeongHo", 100, 200, 30, 30 };
 	std::vector<Enemy> enemies;
 public:
-	BattleRoom(int roomCount); // 원래는 BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies);
+	BattleRoom(int roomCount, Deck* playerDeck); // 원래는 BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies); Deck 생성자 추가
 	int Run();
 	void Reward();
 	void PlayerTurnRun();

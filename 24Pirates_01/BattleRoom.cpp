@@ -4,7 +4,7 @@
 #include <random> //현재는 10번 방 클리어 or 실패 나타내기 위해 쓴 랜덤함수.
 
 
-BattleRoom::BattleRoom(int roomCount): roomCount(roomCount), playerTurn(true), isRunning(true), battleUI(roomCount)  //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies)
+BattleRoom::BattleRoom(int roomCount, Deck* playerDeck): roomCount(roomCount), playerDeck(playerDeck), playerTurn(true), isRunning(true), battleUI(roomCount)  //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies) Deck 포인터 추가
 {
     //더미용 enemy
 	enemies.push_back({ "Goblin", 100, 100, 10, 10, 50, 50 });
@@ -17,6 +17,37 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
     if (roomCount != 10)
     {
         battleUI.Render();
+
+        if (playerDeck != nullptr)
+        {
+            std::cout << "\n=== My Cards ===\n";
+
+            if (playerDeck->getCardCount() == 0)
+            {
+                std::cout << "Deck is empty.\n";
+            }
+            else
+            {
+                for (int i = 0; i < playerDeck->getCardCount(); i++)
+                {
+                    Card* card = playerDeck->getCard(i);
+
+                    if (card != nullptr)
+                    {
+                        std::cout << "[" << i + 1 << "] "
+                            << card->getName()
+                            << " | "
+                            << card->getEffectText()
+                            << "\n";
+                    }
+                }
+            }
+        }
+        else
+        {
+            std::cout << "\nDeck is not connected.\n";
+        }
+
         WaitForEnter();
         return 0;
     }

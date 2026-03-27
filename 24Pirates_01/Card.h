@@ -6,8 +6,8 @@
 #include <vector>
 #include "CardTypes.h"
 
-class Player;
-class Enemy;
+struct Player;
+struct Enemy;
 
 class Card
 {

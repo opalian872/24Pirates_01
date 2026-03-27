@@ -7,7 +7,9 @@
 
 GameManager::GameManager() :currentState(GameState::Start), roomCount(0), isRunning(true)
 {
-
+    playerDeck.addCardByID(cardDatabase, CardID::Strike);
+    playerDeck.addCardByID(cardDatabase, CardID::Heal);
+    playerDeck.addCardByID(cardDatabase, CardID::Whirlwind);
 }
 
 void GameManager::Run()
@@ -84,7 +86,7 @@ void GameManager::RunStartMenu() // 여기서 StartingUI 를 불러옵니다.
 int GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. player와 vector<Enemy>, cardDatabase를 가지고 들어갈 거 같습니다.
 {
     int clearState;
-    BattleRoom battleRoom = BattleRoom(roomCount);
+    BattleRoom battleRoom(roomCount, &playerDeck);
     clearState = battleRoom.Run();
     roomCount++;
     return clearState; // clearState 가 0이면 일반방 클리어, 1이면 GameOver, 2이면 Clear

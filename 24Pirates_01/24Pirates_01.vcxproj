@@ -140,9 +140,9 @@
     <ClInclude Include="CardDatabase.h" />
     <ClInclude Include="CardTypes.h" />
     <ClInclude Include="Deck.h" />
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyDummy.h" />
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerDummy.h" />
     <ClInclude Include="ShopRoom.h" />
     <ClInclude Include="StartMenuUI.h" />
   </ItemGroup>

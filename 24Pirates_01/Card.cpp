@@ -1,8 +1,8 @@
 ﻿// Card.cpp
 
 #include "Card.h"
-#include "Player.h"
-#include "Enemy.h"
+#include "PlayerDummy.h"
+#include "EnemyDummy.h"
 
 Card::Card(CardID id,
     CardRarity rarity,
