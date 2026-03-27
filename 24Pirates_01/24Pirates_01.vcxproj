@@ -127,12 +127,23 @@
     <ClCompile Include="BattleUI.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="ShopManager.cpp" />
+    <ClCompile Include="ShopRoom.cpp" />
+>>>>>>> Stashed changes
     <ClCompile Include="StartMenuUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleRoom.h" />
     <ClInclude Include="BattleUI.h" />
     <ClInclude Include="GameManager.h" />
+<<<<<<< Updated upstream
+=======
+    <ClInclude Include="PlayerDummy.h" />
+    <ClInclude Include="ShopManager.h" />
+    <ClInclude Include="ShopRoom.h" />
+>>>>>>> Stashed changes
     <ClInclude Include="StartMenuUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
