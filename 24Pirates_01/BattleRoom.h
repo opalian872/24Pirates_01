@@ -54,7 +54,7 @@ public:
 	void Reward();
 	void PlayerTurnRun();
     void WaitForEnter();
-    void PackageUIData();
+    void RenewUI();
 
 };
 

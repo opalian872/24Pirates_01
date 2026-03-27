@@ -11,16 +11,25 @@ playerTurn(true), isRunning(true), battleUI(roomCount), battleUIState(BattleUISt
     //더미용 enemy
 	enemies.push_back({ "Goblin", 1, 1, 1, 1, 1, 1 });
 	enemies.push_back({ "Dragon", 1, 1, 1, 1, 1, 1 });
-    //enemies.push_back({ "KyeongHo Park", 1, 1, 1, 1, 1, 1 });
+    enemies.push_back({ "KyeongHo Park", 1, 1, 1, 1, 1, 1 });
 }
 
 int BattleRoom::Run() //지금 당장은 더미입니다.
 //0, 1, 2 int 리턴값으로 방 클리어, 게임 오버, 게임 전체 클리어 표시할 예정입니다
 {
-    PackageUIData();
-    battleUI.Render(data, battleUIState);
+    RenewUI();
     WaitForEnter();
-
+    int choice = 0;
+    while (player.currentHealth > 0 && enemies.size() > 0)
+    {
+        std::cin >> choice;
+        switch (choice)
+        {
+        case 1:
+        case 2:
+        }
+            
+    }
 
 
     return 0;
@@ -145,7 +154,7 @@ void BattleRoom::WaitForEnter()
     std::cin.get();
 }
 
-void BattleRoom::PackageUIData()
+void BattleRoom::RenewUI()
 {
     data.enemies = &enemies;
     data.playerName = player.name;
@@ -154,6 +163,6 @@ void BattleRoom::PackageUIData()
     data.playerAttack = player.attack;
     data.playerDefense = player.defense;
     data.playerDeck = playerDeck;
-
+    battleUI.Render(data, battleUIState);
     return;
 }
