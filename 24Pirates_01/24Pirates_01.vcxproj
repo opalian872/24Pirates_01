@@ -127,6 +127,7 @@
     <ClCompile Include="BattleUI.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShopRoom.cpp" />
     <ClCompile Include="StartMenuUI.cpp" />
   </ItemGroup>
@@ -134,6 +135,7 @@
     <ClInclude Include="BattleRoom.h" />
     <ClInclude Include="BattleUI.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="ShopRoom.h" />
     <ClInclude Include="StartMenuUI.h" />
   </ItemGroup>

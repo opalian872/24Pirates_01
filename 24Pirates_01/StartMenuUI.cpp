@@ -1,8 +1,9 @@
-//StartMenuUI.cpp
+﻿//StartMenuUI.cpp
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include "StartMenuUI.h"
+#include "Player.h"
 
 
 void StartMenuUI::ClearScreen()
@@ -48,7 +49,7 @@ void StartMenuUI::Render()
 	std::cout << " Enter Player Name: ";
 }
 
-void StartMenuUI::Render(std::string inputName)
+void StartMenuUI::Render(std::string name)
 {
 	std::cout << "                                                                                 #######            " << '\n';
 	std::cout << "                                                                        #################           " << '\n';
@@ -79,9 +80,26 @@ void StartMenuUI::Render(std::string inputName)
 	std::cout << "          #######################                            ####   ###### ####   ####              " << '\n';
 	std::cout << "            ###########                                       ####   #### ###    ####               " << '\n';
 	std::cout << "                                                               ####  ##  ##      ###                " << '\n';
-	std::cout << "Hello, World! Hello, " << inputName << "!" << std::endl;
+	std::cout << "Hello, World! Hello, " << name << "!" << std::endl;
 	
 }
 
+void Player::PlayerMaking(std::string name, int& level, int& maxHp, int& hp, int& attack, int& defense, int& exp, int& gold, bool& playerCondition)
+{
+    level = 1;
+    maxHp = 200;
+    hp = maxHp;
+    attack = 30;
+    defense = 0;
+    exp = 0;
+    gold = 0;
+    playerCondition = true;
 
-
+    std::cout << "player's name : " << name << std::endl;
+    std::cout << "player's level : " << level << std::endl;
+    std::cout << "Player's HP : " << hp << "/" << maxHp << std::endl;
+    std::cout << "Player's attack : " << attack << std::endl;
+    std::cout << "Player's defense : " << defense << std::endl;
+    std::cout << "Player's exp : " << exp << std::endl;
+    std::cout << "Player's gold : " << gold << std::endl;
+}
