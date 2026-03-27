@@ -17,7 +17,7 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
 {
     PackageUIData();
     battleUI.Render(data);
-
+    WaitForEnter();
 
 
 
