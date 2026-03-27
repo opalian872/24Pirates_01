@@ -1,4 +1,4 @@
-//BattleRoom.h
+﻿//BattleRoom.h
 #pragma once
 #include <vector>
 #include <string>
@@ -36,16 +36,19 @@ private:
 	//Player& player;
 	//CardDatabase& cardDatabase;
 	//std::vector<std::unique_ptr<Enemy>> enemies; -> Enemy 자식 클래스들 소환하기 위한 방법
-	BattleUI ui;
+	BattleUI battleUI;
 	bool playerTurn = true;
 	bool isRunning = true;
+    const int roomCount;
 	//여기서부턴 테스트용 더미데이터입니다.
 	Player player = { "ParkKyeongHo", 100, 200, 30, 30 };
 	std::vector<Enemy> enemies;
 public:
-	BattleRoom(); // 원래는 BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies);
-	void Run();
+	BattleRoom(int roomCount); // 원래는 BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies);
+	int Run();
 	void Reward();
 	void PlayerTurnRun();
+    void WaitForEnter();
+
 };
 

@@ -3,6 +3,7 @@
 //#include "Player.h"
 #include "StartMenuUI.h"
 #include "BattleUI.h"
+#include "BattleRoom.h"
 #include <iostream>
 
 enum class GameState
@@ -29,7 +30,7 @@ public:
 	void Run();
 	void GenerateRoom();
 	void RunStartMenu();
-	void RunBattleRoom();
+	int RunBattleRoom();
 	void RunShopRoom();
 	void RunGameOver();
 	void RunClear();
