@@ -130,7 +130,15 @@
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="ShopRoom.cpp" />
+=======
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="ShopManager.cpp" />
+    <ClCompile Include="ShopRoom.cpp" />
+>>>>>>> Stashed changes
+>>>>>>> Shop
     <ClCompile Include="StartMenuUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,8 +150,17 @@
     <ClInclude Include="Deck.h" />
     <ClInclude Include="EnemyDummy.h" />
     <ClInclude Include="GameManager.h" />
+<<<<<<< HEAD
     <ClInclude Include="PlayerDummy.h" />
     <ClInclude Include="ShopRoom.h" />
+=======
+<<<<<<< Updated upstream
+=======
+    <ClInclude Include="PlayerDummy.h" />
+    <ClInclude Include="ShopManager.h" />
+    <ClInclude Include="ShopRoom.h" />
+>>>>>>> Stashed changes
+>>>>>>> Shop
     <ClInclude Include="StartMenuUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

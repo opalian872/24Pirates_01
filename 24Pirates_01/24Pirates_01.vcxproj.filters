@@ -30,6 +30,11 @@
     <ClCompile Include="StartMenuUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Shop
     <ClCompile Include="ShopRoom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,6 +47,13 @@
     <ClCompile Include="Deck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="ShopManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+>>>>>>> Stashed changes
+>>>>>>> Shop
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -56,6 +68,11 @@
     <ClInclude Include="StartMenuUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Shop
     <ClInclude Include="ShopRoom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -77,5 +94,12 @@
     <ClInclude Include="EnemyDummy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="ShopManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+>>>>>>> Stashed changes
+>>>>>>> Shop
   </ItemGroup>
 </Project>

@@ -3,7 +3,15 @@
 #include <iostream>
 #include <limits>
 #include "GameManager.h"
+<<<<<<< HEAD
 #include "ShopRoom.h"
+=======
+<<<<<<< Updated upstream
+=======
+#include "ShopRoom.h"
+#include "ShopManager.h"
+>>>>>>> Stashed changes
+>>>>>>> Shop
 
 GameManager::GameManager() :currentState(GameState::Start), roomCount(0), isRunning(true)
 {
@@ -93,12 +101,26 @@ int GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. pla
 }
 void GameManager::RunShopRoom() //여기서 ShopRoom을 불러옵니다
 {
+<<<<<<< HEAD
     ShopRoom shopRoom(roomCount);
     shopRoom.ShowMenu();
 
 
+=======
+<<<<<<< Updated upstream
+	std::cout << "Current Room: " << roomCount << " In Shop!" << std::endl;
+	std::cout << "Shopping ended." << std::endl;
+>>>>>>> Shop
 	WaitForEnter();
 	roomCount++;
+=======
+    ShopManager shopManager(cardDatabase, playerDeck);
+    ShopRoom shopRoom(roomCount, shopManager);
+    shopRoom.ShowMenu();
+
+    WaitForEnter();
+    roomCount++;
+>>>>>>> Stashed changes
 }
 void GameManager::RunGameOver()//여기서 Game Over 스크린을 불러옵니다
 {
