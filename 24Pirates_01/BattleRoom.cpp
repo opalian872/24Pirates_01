@@ -27,6 +27,8 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
         {
         case 1:
         case 2:
+        default:
+            break;
         }
             
     }
