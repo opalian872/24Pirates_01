@@ -20,7 +20,7 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
     RenewUI();
     WaitForEnter();
     int choice = 0;
-    while (player.currentHealth > 0 && enemies.size() > 0)
+    /*while (player.currentHealth > 0 && enemies.size() > 0)
     {
         std::cin >> choice;
         switch (choice)
@@ -30,8 +30,8 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
         default:
             break;
         }
-            
-    }
+        break;
+    }*/
 
 
     return 0;
