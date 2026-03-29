@@ -12,6 +12,8 @@
     <ClCompile Include="ShopRoom.cpp" />
     <ClCompile Include="StartMenuUI.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="NormalEnemy.cpp" />
+    <ClCompile Include="BossEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleRoom.h" />
@@ -28,5 +30,7 @@
     <ClInclude Include="StartMenuUI.h" />
     <ClInclude Include="UIData.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="NormalEnemy.h" />
+    <ClInclude Include="BossEnemy.h" />
   </ItemGroup>
 </Project>

@@ -125,12 +125,14 @@
   <ItemGroup>
     <ClCompile Include="BattleRoom.cpp" />
     <ClCompile Include="BattleUI.cpp" />
+    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CardDatabase.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NormalEnemy.cpp" />
     <ClCompile Include="ShopManager.cpp" />
     <ClCompile Include="ShopRoom.cpp" />
     <ClCompile Include="StartMenuUI.cpp" />
@@ -138,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="BattleRoom.h" />
     <ClInclude Include="BattleUI.h" />
+    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardDatabase.h" />
     <ClInclude Include="CardTypes.h" />
@@ -145,6 +148,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyDummy.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="NormalEnemy.h" />
     <ClInclude Include="PlayerDummy.h" />
     <ClInclude Include="ShopManager.h" />
     <ClInclude Include="ShopRoom.h" />
