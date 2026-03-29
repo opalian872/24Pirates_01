@@ -5,6 +5,7 @@
 #include "GameManager.h"
 #include "ShopRoom.h"
 #include "ShopManager.h"
+#include "Player.h"
 
 GameManager::GameManager() :currentState(GameState::Start), roomCount(0), isRunning(true)
 {
@@ -82,6 +83,7 @@ void GameManager::RunStartMenu() // 여기서 StartingUI 를 불러옵니다.
 	std::cin >> inputName;
 	startMenuUI.ClearScreen();
 	startMenuUI.Render(inputName);
+    myPlayer.PlayerMaking(inputName, 1, 200, 200, 30, 0, 0, 0, true);
     std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n'); //전에 입력 받았으므로
 	WaitForEnter();
 	currentState = GameState::InBattle;
