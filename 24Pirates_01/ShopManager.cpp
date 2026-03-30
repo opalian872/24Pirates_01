@@ -7,7 +7,7 @@
 
 // 카드 DB와 덱, 플레이어를 받아 상점 데이터를 초기화
 ShopManager::ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck, Player& player)
-    : cardDatabase(cardDatabase), playerDeck(playerDeck), player(player), hasUsedReset(false), removeCardCount(0)
+    : cardDatabase(cardDatabase), playerDeck(playerDeck), player(player), hasUsedReset(false), removeCardCount(0), lastRandomRemoveGold(0)
 {
     InitializeShop();
 }
@@ -141,25 +141,39 @@ bool ShopManager::RemoveRandomCard()
 
     if (deckCount <= 0)
     {
+        lastRandomRemoveGold = 0;
         return false;
     }
 
     std::random_device rd;
     std::mt19937 g(rd());
-    std::uniform_int_distribution<int> dist(0, deckCount - 1);
 
+    // 랜덤으로 제거할 카드
+    std::uniform_int_distribution<int> dist(0, deckCount - 1);
     int randomIndex = dist(g);
 
     Card* card = playerDeck.getCard(randomIndex);
     if (card == nullptr)
     {
+        lastRandomRemoveGold = 0;
         return false;
     }
 
     AddBlockedCard(card->getID());
     playerDeck.removeCard(randomIndex);
 
+    // 0~60 골드 지급
+    std::uniform_int_distribution<int> goldDist(0, 6);
+    lastRandomRemoveGold = goldDist(g) * 10;
+
+    player.GainGold(lastRandomRemoveGold, "Random remove reward ");
+
     return true;
+}
+
+int ShopManager::GetLastRandomRemoveGold() const
+{
+    return lastRandomRemoveGold;
 }
 
 // 현재 상점 슬롯 목록을 반환

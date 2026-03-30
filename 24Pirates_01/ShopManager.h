@@ -60,6 +60,10 @@ private:
     // 희귀도에 따라 카드 가격을 반환
     int GetCardPrice(const std::string& rarity) const;
 
+    // 마지막 랜덤 제거시 얻은 골드를 저장
+    int lastRandomRemoveGold;
+
+
 public:
     // 카드 DB, 플레이어 덱, 플레이어 정보를 연결해서 상점 관리 객체를 생성
     ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck, Player& player);
@@ -78,6 +82,9 @@ public:
 
     // 플레이어 덱에서 카드를 랜덤으로 1장 제거하고 상점 재등장을 막음
     bool RemoveRandomCard();
+
+    // 마지막 랜덤 제거시 얻은 골드를 반환
+    int GetLastRandomRemoveGold() const;
 
     // 현재 상점 슬롯 목록을 반환
     const std::vector<ShopCardData>& GetShopCards() const;
