@@ -17,7 +17,23 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
 //0, 1, 2 int 리턴값으로 방 클리어, 게임 오버, 게임 전체 클리어 표시할 예정입니다
 {
     RenewUI();
-    WaitForEnter();
+    //WaitForEnter();
+    int choice = 0;
+    while (isRunning)
+    {
+        battleUIState = BattleUIState::Default;
+        while (playerTurn)
+        {
+            std::cin >> choice;
+            switch (choice)
+            {
+            case 1:
+                battleUIState = BattleUIState::ChooseCard;
+
+            }
+                
+        }
+    }
     int choice = 0;
 
     /*while (player.currentHealth > 0 && enemies.size() > 0)
@@ -204,4 +220,9 @@ void BattleRoom::RenewUI()
     data.currentLog = currentLog;
     battleUI.Render(data, battleUIState);
     return;
+}
+
+bool BattleRoom::CheckForClear()
+{
+    if(player.GetPlayerCondition)
 }

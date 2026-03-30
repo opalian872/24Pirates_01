@@ -61,5 +61,6 @@ public:
     //추후 플레이어 hand 도 package 하는 override 함수 구현 예정
     void RenewUI();
 
+    bool CheckForClear();
 };
 
