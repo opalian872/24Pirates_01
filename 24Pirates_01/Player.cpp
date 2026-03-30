@@ -83,12 +83,14 @@ void Player::TakeDamage(int damage, std::string takeDMsg1, std::string takeDMsg2
 {
 
     int finalDamage = damage - defense;
-    hp -= finalDamage;
-
     if (finalDamage <= 0)
     {
         std::cout << takeDMsg1 << std::endl;
+        break;
     }
+
+    hp -= finalDamage;
+
     else
     {
         std::cout << takeDMsg2 << finalDamage << std::endl;
