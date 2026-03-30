@@ -27,69 +27,83 @@ void Player::PlayerMaking(std::string inname, int inlevel, int inmaxHp, int inhp
 
 void Player::CreateStarterDeck(const CardDatabase& database)
 {
-    playerDeck.addCardByID(database, CardID::Strike);
-    playerDeck.addCardByID(database, CardID::Heal);
-    playerDeck.addCardByID(database, CardID::Whirlwind);
-    playerDeck.addCardByID(database, CardID::Strike);
-    playerDeck.addCardByID(database, CardID::Heal);
-    playerDeck.addCardByID(database, CardID::DefenseBoost);
+    playerDeck.addCardByID(database, CardID::KeyboardSmash);
+    playerDeck.addCardByID(database, CardID::DoubleClickBug);
+    playerDeck.addCardByID(database, CardID::SuddenBathroom);
+    playerDeck.addCardByID(database, CardID::MonitorOff);
+    playerDeck.addCardByID(database, CardID::ChairPush);
+    playerDeck.addCardByID(database, CardID::CtrlZLife);
+    playerDeck.addCardByID(database, CardID::ShakeWifi);
 }
 
-void Player::GainExp(int expAmount)
+void Player::GainExp(int expAmount, std::string gainEMsg)
 {
-    std::cout << "The player gains " << expAmount << " experience points!" << std::endl;
+    std::cout << gainEMsg << expAmount << std::endl;
     exp += expAmount;
     if (exp >= 100)
     {
-        std::cout << "The player levels up!" << std::endl;
-        ++level;
-        maxHp += level * 20;
-        hp = maxHp;
-        attack += level * 5;
-        exp = 0;
+        LevelUp("The Player levels up!");
     }
 
 }
-void Player::GainGold(int goldAmount)
+
+void Player::LevelUp(std::string levelMsg)
 {
-    std::cout << "The player gains " << goldAmount << " gold!" << std::endl;
+    std::cout << levelMsg << std::endl;
+    ++level;
+    maxHp += level * 20;
+    hp = maxHp;
+    attack += level * 5;
+    exp = 0;
+
+}
+
+void Player::GainGold(int goldAmount, std::string gainGMsg)
+{
+    std::cout << gainGMsg << goldAmount << std::endl;
     gold += goldAmount;
 
 }
 
-void Player::TakeDamage(int damage)
+void Player::TakeDamage(int damage, std::string takeDMsg1, std::string takeDMsg2, std::string takeDMsg3, std::string takeDMsg4)
 {
 
     int finalDamage = damage - defense;
+    hp -= finalDamage;
 
     if (finalDamage <= 0)
     {
-        std::cout << "The monster's attack bounced off!" << std::endl;
+        std::cout << takeDMsg1 << std::endl;
     }
     else
     {
-        std::cout << "The player took " << finalDamage << " damage!" << std::endl;
+        std::cout << takeDMsg2 << finalDamage << std::endl;
 
-        if(hp <= 0)
+        if (hp <= 0)
         {
-            std::cout << "The player's HP has run out." << std::endl;
-            std::cout << "The player's vision went dark." << std::endl;
+            std::cout << takeDMsg3 << std::endl;
+            std::cout << takeDMsg4 << std::endl;
             playerCondition = false;
         }
     }
-    
+
 
 }
 
-void Player::Heal(int healAmount)
+void Player::Heal(int healAmount, std::string healMsg1, std::string healMsg2)
 {
-    std::cout << "The player's HP is restored!" << std::endl;
+    std::cout << healMsg1 << std::endl;
     hp += healAmount;
     if (hp > maxHp)
     {
         hp = maxHp;
     }
-    std::cout << "Player's HP has been restored!" << std::endl;
+    std::cout << healMsg2 << std::endl;
+
+}
+
+void Player::UseCard()
+{
 
 }
 
@@ -101,6 +115,11 @@ void Player::AddCardToDeck(Card* card)
 void Player::AddCardToDeckByID(const CardDatabase& database, CardID id)
 {
     playerDeck.addCardByID(database, id);
+}
+
+void Player::ShowMyDeck()
+{
+    
 }
 
 int Player::GetDeckSize()
