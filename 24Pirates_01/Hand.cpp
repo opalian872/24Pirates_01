@@ -1,6 +1,4 @@
-﻿// Hand.cpp
-
-#include "Hand.h"
+﻿#include "Hand.h"
 #include <cstdlib>
 
 Hand::Hand()
@@ -9,12 +7,17 @@ Hand::Hand()
 
 Hand::~Hand()
 {
-    Clear();
+    for (Card* card : cards)
+    {
+        delete card;
+    }
+
+    cards.clear();
 }
 
-void Hand::DrawCards(const Deck& deck, int count)
+void Hand::DrawCards(const Deck& deck, int count, Player& player)
 {
-    Clear();
+    Clear(player);
 
     int deckSize = deck.getCardCount();
 
@@ -26,19 +29,31 @@ void Hand::DrawCards(const Deck& deck, int count)
     for (int i = 0; i < count; i++)
     {
         int randomIndex = rand() % deckSize;
-        Card* card = deck.getCard(randomIndex);
+        Card* original = deck.getCard(randomIndex);
 
-        if (card != nullptr)
+        if (original != nullptr)
         {
-            cards.push_back(card->clone());
+            Card* newCard = original->clone();
+
+            if (newCard->IsPassive())
+            {
+                newCard->ApplyPassive(player);
+            }
+
+            cards.push_back(newCard);
         }
     }
 }
 
-void Hand::addCard(Card* card)
+void Hand::addCard(Card* card, Player& player)
 {
     if (card != nullptr)
     {
+        if (card->IsPassive())
+        {
+            card->ApplyPassive(player);
+        }
+
         cards.push_back(card);
     }
 }
@@ -63,10 +78,15 @@ const std::vector<Card*>& Hand::getCards() const
     return cards;
 }
 
-void Hand::Clear()
+void Hand::Clear(Player& player)
 {
     for (Card* card : cards)
     {
+        if (card != nullptr && card->IsPassive())
+        {
+            card->RemovePassive(player);
+        }
+
         delete card;
     }
 
