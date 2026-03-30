@@ -65,6 +65,20 @@ void Player::GainGold(int goldAmount, std::string gainGMsg)
 
 }
 
+bool Player::SubGold(int goldAmount)
+{
+    if (gold < goldAmount)
+    {
+        std::cout << "Not enough gold!" << std::endl;
+        return false;
+    }
+
+    gold -= goldAmount;
+    std::cout << goldAmount << " gold has been spent." << std::endl;
+    return true;
+}
+
+
 void Player::TakeDamage(int damage, std::string takeDMsg1, std::string takeDMsg2, std::string takeDMsg3, std::string takeDMsg4)
 {
 

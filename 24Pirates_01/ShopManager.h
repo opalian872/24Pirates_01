@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include "Card.h"
-#include "Player.h"
 
 class CardDatabase;
 class Deck;
@@ -26,7 +25,7 @@ struct ShopCardData
     }
 };
 
-// 상점 카드 진열, 구매, 덱 제거, 재등장 금지를 관리하는 클래스
+// 상점 카드 진열, 구매, 제거, 리셋 제한을 관리하는 클래스
 class ShopManager
 {
 private:
@@ -40,8 +39,29 @@ private:
     // 다시 상점에 나오면 안 되는 카드 ID 목록
     std::vector<CardID> blockedCardIDs;
 
+    // 상점 리셋 사용 여부
+    bool hasUsedReset;
+
+    // 덱 카드 제거 사용 횟수
+    int removeCardCount;
+
+    // 해당 카드 ID가 이미 상점 차단 목록에 있는지 확인
+    bool IsBlocked(CardID id) const;
+
+    // 카드 ID를 차단 목록에 추가해서 다시 상점에 나오지 못하게 함
+    void AddBlockedCard(CardID id);
+
+    // 카드 희귀도 enum 값을 문자열로 변환
+    std::string RarityToString(CardRarity rarity) const;
+
+    // Card 객체를 상점 출력용 데이터로 변환
+    ShopCardData ConvertCardToShopData(Card* card) const;
+
+    // 희귀도에 따라 카드 가격을 반환
+    int GetCardPrice(const std::string& rarity) const;
+
 public:
-    // 카드 DB와 플레이어 덱을 연결해서 상점 관리 객체를 생성
+    // 카드 DB, 플레이어 덱, 플레이어 정보를 연결해서 상점 관리 객체를 생성
     ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck, Player& player);
 
     // 상점 슬롯 10칸을 만들고 초기 카드 진열을 준비
@@ -50,7 +70,7 @@ public:
     // 차단되지 않은 카드들만 다시 뽑아서 상점을 새로고침
     void ResetShop();
 
-    // 상점 슬롯의 카드를 구매해서 덱에 추가하고 해당 슬롯을 비움
+    // 상점 슬롯의 카드를 구매해서 덱에 추가하고 골드를 차감
     bool BuyCard(int index);
 
     // 플레이어 덱에서 선택한 카드를 제거하고 상점 재등장을 막음
@@ -65,21 +85,19 @@ public:
     // 현재 플레이어 덱 카드 개수를 반환
     int GetDeckCardCount() const;
 
-    int GetCurrentGold() const;
-
     // 플레이어 덱에서 특정 위치의 카드를 반환
     Card* GetDeckCard(int index) const;
 
-private:
-    // 해당 카드 ID가 이미 상점 차단 목록에 있는지 확인
-    bool IsBlocked(CardID id) const;
+    // 현재 플레이어 골드를 반환
+    int getGold() const;
 
-    // 카드 ID를 차단 목록에 추가해서 다시 상점에 나오지 못하게 함
-    void AddBlockedCard(CardID id);
+    // 상점 리셋 가능 여부를 반환
+    bool CanResetShop() const;
 
-    // 카드 희귀도 enum 값을 문자열로 변환
-    std::string RarityToString(CardRarity rarity) const;
+    // 카드 제거 가능 여부를 반환
+    bool CanRemoveCard() const;
 
-    // Card 객체를 상점 출력용 데이터로 변환
-    ShopCardData ConvertCardToShopData(Card* card) const;
+    // 현재 카드 제거 사용 횟수를 반환
+    int GetRemoveCardCount() const;
+
 };

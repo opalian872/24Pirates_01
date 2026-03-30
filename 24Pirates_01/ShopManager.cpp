@@ -5,12 +5,14 @@
 #include <algorithm>
 #include <random>
 
+// 카드 DB와 덱, 플레이어를 받아 상점 데이터를 초기화
 ShopManager::ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck, Player& player)
-    : cardDatabase(cardDatabase), playerDeck(playerDeck), player(player)
+    : cardDatabase(cardDatabase), playerDeck(playerDeck), player(player), hasUsedReset(false), removeCardCount(0)
 {
     InitializeShop();
 }
 
+// 상점 슬롯 10칸을 만들고 첫 진열을 준비
 void ShopManager::InitializeShop()
 {
     shopCards.clear();
@@ -21,10 +23,21 @@ void ShopManager::InitializeShop()
     }
 
     ResetShop();
+
+    // 처음 상점 생성은 리셋 사용으로 치지 않도록 다시 false 처리
+    hasUsedReset = false;
 }
 
+// 차단되지 않은 카드만 다시 뽑아 상점을 새로고침
 void ShopManager::ResetShop()
 {
+    if (hasUsedReset)
+    {
+        return;
+    }
+
+    hasUsedReset = true;
+
     for (int i = 0; i < 10; i++)
     {
         shopCards[i] = ShopCardData();
@@ -70,6 +83,7 @@ void ShopManager::ResetShop()
     }
 }
 
+// 선택한 상점 카드를 구매해서 덱에 넣고 골드를 차감하며, 다시 상점에 못 나오게 처리
 bool ShopManager::BuyCard(int index)
 {
     if (index < 0 || index >= 10)
@@ -82,17 +96,30 @@ bool ShopManager::BuyCard(int index)
         return false;
     }
 
+    int price = GetCardPrice(shopCards[index].rarity);
+
+    if (!player.SubGold(price))
+    {
+        return false;
+    }
+
     playerDeck.addCardByID(cardDatabase, shopCards[index].id);
     AddBlockedCard(shopCards[index].id);
 
-    // 슬롯은 비우되 칸은 유지
+    // 슬롯은 비우되 칸 자체는 유지
     shopCards[index] = ShopCardData();
 
     return true;
 }
 
+// 플레이어 덱에서 선택한 카드를 제거하고, 해당 카드를 다시 상점에 못 나오게 처리
 bool ShopManager::RemoveCard(int deckIndex)
 {
+    if (removeCardCount >= 3)
+    {
+        return false;
+    }
+
     Card* card = playerDeck.getCard(deckIndex);
 
     if (card == nullptr)
@@ -102,10 +129,12 @@ bool ShopManager::RemoveCard(int deckIndex)
 
     AddBlockedCard(card->getID());
     playerDeck.removeCard(deckIndex);
+    removeCardCount++;
 
     return true;
 }
 
+// 플레이어 덱에서 랜덤으로 1장을 제거하고, 해당 카드를 다시 상점에 못 나오게 처리
 bool ShopManager::RemoveRandomCard()
 {
     int deckCount = playerDeck.getCardCount();
@@ -133,26 +162,49 @@ bool ShopManager::RemoveRandomCard()
     return true;
 }
 
+// 현재 상점 슬롯 목록을 반환
 const std::vector<ShopCardData>& ShopManager::GetShopCards() const
 {
     return shopCards;
 }
 
+// 현재 플레이어 덱 카드 개수를 반환
 int ShopManager::GetDeckCardCount() const
 {
     return playerDeck.getCardCount();
 }
 
-int ShopManager::GetCurrentGold() const
-{
-    return player.GetGold();
-}
-
+// 플레이어 덱의 특정 위치 카드를 반환
 Card* ShopManager::GetDeckCard(int index) const
 {
     return playerDeck.getCard(index);
 }
 
+// 현재 플레이어 골드를 반환
+int ShopManager::getGold() const
+{
+    return player.GetGold();
+}
+
+// 상점 리셋 가능 여부를 반환
+bool ShopManager::CanResetShop() const
+{
+    return !hasUsedReset;
+}
+
+// 카드 제거 가능 여부를 반환
+bool ShopManager::CanRemoveCard() const
+{
+    return removeCardCount < 3;
+}
+
+// 현재 카드 제거 사용 횟수를 반환
+int ShopManager::GetRemoveCardCount() const
+{
+    return removeCardCount;
+}
+
+// 카드가 차단 목록에 있는지 확인
 bool ShopManager::IsBlocked(CardID id) const
 {
     for (CardID blockedID : blockedCardIDs)
@@ -166,6 +218,7 @@ bool ShopManager::IsBlocked(CardID id) const
     return false;
 }
 
+// 카드 ID를 차단 목록에 추가해서 이후 상점 후보에서 제외
 void ShopManager::AddBlockedCard(CardID id)
 {
     if (IsBlocked(id))
@@ -176,6 +229,7 @@ void ShopManager::AddBlockedCard(CardID id)
     blockedCardIDs.push_back(id);
 }
 
+// 희귀도 enum 값을 문자열로 바꿔서 출력용으로 사용
 std::string ShopManager::RarityToString(CardRarity rarity) const
 {
     switch (rarity)
@@ -191,6 +245,7 @@ std::string ShopManager::RarityToString(CardRarity rarity) const
     }
 }
 
+// Card 객체를 상점 출력용 구조체로 변환
 ShopCardData ShopManager::ConvertCardToShopData(Card* card) const
 {
     return ShopCardData(
@@ -199,4 +254,23 @@ ShopCardData ShopManager::ConvertCardToShopData(Card* card) const
         RarityToString(card->getRarity()),
         card->getDescription()
     );
+}
+
+// 희귀도에 따라 카드 가격을 반환
+int ShopManager::GetCardPrice(const std::string& rarity) const
+{
+    if (rarity == "Normal")
+    {
+        return 20;
+    }
+    else if (rarity == "Rare")
+    {
+        return 30;
+    }
+    else if (rarity == "Epic")
+    {
+        return 50;
+    }
+
+    return 0;
 }
