@@ -1,6 +1,4 @@
-﻿// Card.h
-
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <vector>
@@ -37,6 +35,12 @@ public:
     CardType getCardType() const;
     TargetType getTargetType() const;
 
+    bool IsPassive() const;
+    bool IsPlayableInHand() const;
+
     void use(Player& player, std::vector<Enemy>& enemies, int targetIndex) const;
+    void ApplyPassive(Player& player) const;
+    void RemovePassive(Player& player) const;
+
     Card* clone() const;
 };

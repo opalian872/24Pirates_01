@@ -1,6 +1,4 @@
-﻿// CardTypes.h
-
-#pragma once
+﻿#pragma once
 
 enum class CardType
 {
@@ -25,12 +23,47 @@ enum class CardRarity
 
 enum class CardID
 {
-    Strike,
-    Heal,
-    DefenseBoost,
-    AttackBoost,
-    DoubleHit,
-    MemoryShield,
-    Regeneration,
-    Whirlwind
+    KeyboardSmash,
+    DoubleClickBug,
+    SuddenBathroom,
+    MonitorOff,
+    ChairPush,
+    CtrlZLife,
+    SuddenWorkingCode,
+    HitTheComputer,
+    SuddenSleepiness,
+    MemeAttack,
+    CaffeineOverdose,
+    CtrlSObsessive,
+    BlankMaster,
+    LaptopFanTurboMode,
+    TruthRoom,
+    InternetDisconnected,
+    DeleteWholeCode,
+    TeamProjectPainBuff,
+    Reboot,
+    ShakeWifi,
+    DebugHell,
+    FileRecovery,
+    FocusBurst,
+    ServerConnect,
+    ServerExplosion,
+    KeyboardMash,
+    CodeRampage,
+    Emergency,
+    AssignmentCurse,
+    OverNightTranscendence,
+    RescueTouch,
+    CodeFusion,
+    CpuFullPower,
+
+    // Compatibility aliases for old code
+    Strike = KeyboardSmash,
+    Heal = CtrlZLife,
+    DefenseBoost = SuddenBathroom,
+    AttackBoost = CaffeineOverdose,
+    DoubleHit = DoubleClickBug,
+    MemoryShield = ChairPush,
+    Regeneration = CtrlSObsessive,
+    Whirlwind = LaptopFanTurboMode
 };
