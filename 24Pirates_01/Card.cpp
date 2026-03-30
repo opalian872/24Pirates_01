@@ -1,34 +1,35 @@
 ﻿#include "Card.h"
-#include "PlayerDummy.h"
-#include "EnemyDummy.h"
+#include "Player.h"
+#include "Enemy.h"
 
 #include <cstdlib>
 #include <ctime>
+#include <memory>
 
 namespace
 {
-    bool IsValidTarget(const std::vector<Enemy>& enemies, int targetIndex)
+    bool IsValidTarget(const std::vector<std::unique_ptr<Enemy>>& enemies, int targetIndex)
     {
         return targetIndex >= 0 &&
             targetIndex < static_cast<int>(enemies.size()) &&
-            !enemies[targetIndex].isDead();
+            !enemies[targetIndex]->isDead();
     }
 
-    void DealDamageToTarget(std::vector<Enemy>& enemies, int targetIndex, int damage)
+    void DealDamageToTarget(std::vector<std::unique_ptr<Enemy>>& enemies, int targetIndex, int damage)
     {
         if (IsValidTarget(enemies, targetIndex))
         {
-            enemies[targetIndex].takeDamage(damage);
+            enemies[targetIndex]->takeDamage(damage);
         }
     }
 
-    void DealDamageToAll(std::vector<Enemy>& enemies, int damage)
+    void DealDamageToAll(std::vector<std::unique_ptr<Enemy>>& enemies, int damage)
     {
-        for (Enemy& enemy : enemies)
+        for (auto& enemy : enemies)
         {
-            if (!enemy.isDead())
+            if (!enemy->isDead())
             {
-                enemy.takeDamage(damage);
+                enemy->takeDamage(damage);
             }
         }
     }
@@ -208,11 +209,10 @@ void Card::RemovePassive(Player& player) const
     }
 }
 
-void Card::use(Player& player, std::vector<Enemy>& enemies, int targetIndex) const
+void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int targetIndex) const
 {
     SeedRandomOnce();
 
-    // Passive cards are not directly playable in hand.
     if (cardType == CardType::Passive)
     {
         return;
@@ -257,23 +257,18 @@ void Card::use(Player& player, std::vector<Enemy>& enemies, int targetIndex) con
         case 1:
             DealDamageToTarget(enemies, targetIndex, 35);
             break;
-
         case 2:
             player.heal(20);
             break;
-
         case 3:
             player.addAttack(15);
             break;
-
         case 4:
             player.addDefense(15);
             break;
-
         case 5:
             DealDamageToAll(enemies, 15);
             break;
-
         default:
             break;
         }
@@ -324,6 +319,10 @@ void Card::use(Player& player, std::vector<Enemy>& enemies, int targetIndex) con
         player.heal(20);
         break;
 
+    case CardID::FocusBurst:
+        // Passive card, normally not used directly
+        break;
+
     case CardID::ServerConnect:
         player.heal(10);
         break;
@@ -348,6 +347,10 @@ void Card::use(Player& player, std::vector<Enemy>& enemies, int targetIndex) con
         DealDamageToTarget(enemies, targetIndex, 60);
         break;
 
+    case CardID::Emergency:
+        // Passive card, normally not used directly
+        break;
+
     case CardID::AssignmentCurse:
         DealDamageToAll(enemies, 35);
         break;
@@ -358,6 +361,10 @@ void Card::use(Player& player, std::vector<Enemy>& enemies, int targetIndex) con
 
     case CardID::RescueTouch:
         player.heal(50);
+        break;
+
+    case CardID::CodeFusion:
+        // Passive card, normally not used directly
         break;
 
     case CardID::CpuFullPower:

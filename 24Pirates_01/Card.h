@@ -2,10 +2,11 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "CardTypes.h"
 
-struct Player;
-struct Enemy;
+class Player;
+class Enemy;
 
 class Card
 {
@@ -38,7 +39,7 @@ public:
     bool IsPassive() const;
     bool IsPlayableInHand() const;
 
-    void use(Player& player, std::vector<Enemy>& enemies, int targetIndex) const;
+    void use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int targetIndex) const;
     void ApplyPassive(Player& player) const;
     void RemovePassive(Player& player) const;
 

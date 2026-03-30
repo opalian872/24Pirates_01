@@ -28,6 +28,9 @@ public:
     void TakeDamage(int damage, std::string takeDMsg1, std::string takeDMsg2, std::string takeDMsg3, std::string takeDMsg4); // damage == 받는 대미지 임시 변수
     void Heal(int healAmount, std::string healMsg1, std::string healMsg2); // heal == 받는 회복 임시 변수
     void UseCard();
+    void heal(int amount) {}
+    void addDefense(int amount) {}
+    void addAttack(int amount) {}
 
     void AddCardToDeck(Card* card);
     void AddCardToDeckByID(const CardDatabase& database, CardID id);
