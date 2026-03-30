@@ -28,6 +28,7 @@ public:
     void RemoveCard();
     void RemoveRandomCard();
     void ResetShop();
+    void CheckMyCards();
     void ExitShop();
 
     // 카드가 있는 슬롯의 박스 출력 문자열을 생성
