@@ -110,6 +110,7 @@ void GameManager::RunStartMenu() // 여기서 StartingUI 를 불러옵니다.
 	WaitForEnter();
 	currentState = GameState::InBattle;
 	roomCount++;
+    GenerateRoom();
 }
 int GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. player와 vector<Enemy>, cardDatabase를 가지고 들어갈 거 같습니다.
 {

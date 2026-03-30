@@ -11,25 +11,25 @@
 
 
 //더미용 enemy struct
-struct DummyEnemy
-{
-    std::string name;
-    int currentHealth;
-    int maxHealth;
-    int attack;
-    int defense;
-    int killGold;
-    int killExp;
-};
-//더미용 player struct
-struct DummyPlayer
-{
-    std::string name;
-    int currentHealth;
-    int maxHealth;
-    int attack;
-    int defense;
-};
+//struct DummyEnemy
+//{
+//    std::string name;
+//    int currentHealth;
+//    int maxHealth;
+//    int attack;
+//    int defense;
+//    int killGold;
+//    int killExp;
+//};
+////더미용 player struct
+//struct DummyPlayer
+//{
+//    std::string name;
+//    int currentHealth;
+//    int maxHealth;
+//    int attack;
+//    int defense;
+//};
 
 
 

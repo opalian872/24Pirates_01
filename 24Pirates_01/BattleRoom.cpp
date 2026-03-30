@@ -17,14 +17,21 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
 //0, 1, 2 int 리턴값으로 방 클리어, 게임 오버, 게임 전체 클리어 표시할 예정입니다
 {
     RenewUI();
-    //WaitForEnter();
-    int choice = 0;
+    WaitForEnter();
+    /*int choice = 0;
     while (isRunning)
     {
         battleUIState = BattleUIState::Default;
         while (playerTurn)
         {
             std::cin >> choice;
+
+            if (std::cin.fail())
+            {
+                std::cin.clear();
+                std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+                continue;
+            }
             switch (choice)
             {
             case 1:
@@ -33,7 +40,7 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
             }
                 
         }
-    }
+    }*/
 
     /*while (player.currentHealth > 0 && enemies.size() > 0)
     {
@@ -200,7 +207,7 @@ void BattleRoom::RenewUI()
     enemiesData.clear();
     for (const auto& enemy : enemies)
     {
-        //enemiesData.push_back(enemy->GetName(), enemy->GetMaxHP())
+        enemiesData.push_back({ enemy->GetName(), enemy->GetMaxHp(), enemy->GetCurrentHp(), enemy->GetAtk(), enemy->GetDef(), enemy->GetExp(), enemy->GetGold()});
     }
     data.playerName = player.GetName();
     data.playerCurrentHealth = player.GetHp();
@@ -215,7 +222,8 @@ void BattleRoom::RenewUI()
         CardData cardData(player.playerDeck.getCard(i)->getID(), player.playerDeck.getCard(i)->getName(), RarityToString(player.playerDeck.getCard(i)->getRarity()), player.playerDeck.getCard(i)->getEffectText());
         cardsData.push_back(cardData);
     }
-    data.playerHand = cardsData; 
+    data.playerHand = cardsData;
+    data.enemies = enemiesData;
     data.currentLog = currentLog;
     battleUI.Render(data, battleUIState);
     return;
