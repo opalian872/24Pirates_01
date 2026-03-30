@@ -34,7 +34,6 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
                 
         }
     }
-    int choice = 0;
 
     /*while (player.currentHealth > 0 && enemies.size() > 0)
     {
@@ -224,5 +223,7 @@ void BattleRoom::RenewUI()
 
 bool BattleRoom::CheckForClear()
 {
-    if(player.GetPlayerCondition)
+    if (player.GetPlayerCondition());
+
+    return true;
 }
