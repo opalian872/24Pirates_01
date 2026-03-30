@@ -23,7 +23,7 @@ void Enemy::ApplyScaling(int roomCount)
 
     // 방어력 증가의 경우 테스트 후 맞는 방식으로 사용하는 것으로.
     // def += (roomCount / 3);
-    def = static_cast<int>(def * scaleFactor);
+    def = static_cast<int>(def * 0);
 }
 
 void Enemy::TakeDamage(int damage)

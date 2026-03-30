@@ -103,8 +103,8 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
         std::cout << '\n';
         RenderEnemies(data);
         RenderHand(data);
-        RenderCommands(data, battleUIState);
         RenderLogs(data);
+        RenderCommands(data, battleUIState);
         break;
     case BattleUIState::ChooseCard:
         ClearScreen();
@@ -112,8 +112,8 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
         std::cout << '\n';
         RenderEnemies(data);
         RenderHand(data);
-        RenderCommands(data, battleUIState);
         RenderLogs(data);
+        RenderCommands(data, battleUIState);
         break;
     case BattleUIState::ChooseCardTarget:
         ClearScreen();
@@ -121,16 +121,16 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
         std::cout << '\n';
         RenderEnemies(data);
         RenderHand(data);
-        RenderCommands(data, battleUIState);
         RenderLogs(data);
+        RenderCommands(data, battleUIState);
         break;
     case BattleUIState::CheckDeck:
         ClearScreen();
         RenderHeader(data);
         std::cout << '\n';
         RenderDeck(data);
-        RenderCommands(data, battleUIState);
         RenderLogs(data);
+        RenderCommands(data, battleUIState);
         break;
     case BattleUIState::EnemyTurn:
         ClearScreen();
