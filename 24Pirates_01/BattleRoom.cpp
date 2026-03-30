@@ -16,6 +16,7 @@ playerTurn(true), isRunning(true), battleUI(roomCount), battleUIState(BattleUISt
 int BattleRoom::Run() //지금 당장은 더미입니다.
 //0, 1, 2 int 리턴값으로 방 클리어, 게임 오버, 게임 전체 클리어 표시할 예정입니다
 {
+    player.playerHand.DrawCards(player.playerDeck, 5, player);
     RenewUI();
     WaitForEnter();
     /*int choice = 0;
@@ -192,7 +193,7 @@ std::string BattleRoom::RarityToString(CardRarity rarity) const
         return "Unknown";
     }
 }
-std::vector<CardData> BattleRoom::PackageCards()
+std::vector<CardData> BattleRoom::PackageDeck()
 {
     std::vector<CardData> cardsData;
     for (int i = 0; i < player.playerDeck.getCardCount(); i++)
@@ -200,6 +201,17 @@ std::vector<CardData> BattleRoom::PackageCards()
         CardData cardData(player.playerDeck.getCard(i)->getID(), player.playerDeck.getCard(i)->getName(), RarityToString(player.playerDeck.getCard(i)->getRarity()), player.playerDeck.getCard(i)->getEffectText());
             cardsData.push_back(cardData);
         }
+    return cardsData;
+}
+
+std::vector<CardData> BattleRoom::PackageHand()
+{
+    std::vector<CardData> cardsData;
+    for (int i = 0; i < player.playerHand.getCardCount(); i++)
+    {
+        CardData cardData(player.playerHand.getCard(i)->getID(), player.playerHand.getCard(i)->getName(), RarityToString(player.playerHand.getCard(i)->getRarity()), player.playerHand.getCard(i)->getEffectText());
+        cardsData.push_back(cardData);
+    }
     return cardsData;
 }
 void BattleRoom::RenewUI()
@@ -214,15 +226,8 @@ void BattleRoom::RenewUI()
     data.playerMaxHealth = player.GetMaxHp();;
     data.playerAttack = player.GetAttack();
     data.playerDefense = player.GetDefense();
-    data.playerDeck = PackageCards();
-    //아직 Hand가 없으므로 Deck 앞의 5장으로
-    std::vector <CardData> cardsData;
-    for (int i = 0; i < 5; i++)
-    {
-        CardData cardData(player.playerDeck.getCard(i)->getID(), player.playerDeck.getCard(i)->getName(), RarityToString(player.playerDeck.getCard(i)->getRarity()), player.playerDeck.getCard(i)->getEffectText());
-        cardsData.push_back(cardData);
-    }
-    data.playerHand = cardsData;
+    data.playerDeck = PackageDeck();
+    data.playerHand = PackageHand();
     data.enemies = enemiesData;
     data.currentLog = currentLog;
     battleUI.Render(data, battleUIState);

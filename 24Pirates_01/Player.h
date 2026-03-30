@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Deck.h"
+#include "Hand.h"
 #include "CardDatabase.h"
 
 struct Player
@@ -47,4 +48,5 @@ public:
     bool GetPlayerCondition();
 
     Deck playerDeck;
+    Hand playerHand;
 };

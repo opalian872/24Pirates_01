@@ -1,4 +1,5 @@
 ﻿#include "Hand.h"
+#include "Player.h"
 #include <cstdlib>
 
 Hand::Hand()

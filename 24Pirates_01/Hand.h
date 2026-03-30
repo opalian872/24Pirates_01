@@ -3,8 +3,8 @@
 #include <vector>
 #include "Card.h"
 #include "Deck.h"
-#include "Player.h"
 
+struct Player;
 class Hand
 {
 private:
