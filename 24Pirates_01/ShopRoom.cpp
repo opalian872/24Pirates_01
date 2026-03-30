@@ -385,6 +385,7 @@ void ShopRoom::RemoveRandomCard()
     if (shopManager.RemoveRandomCard())
     {
         std::cout << "\nA random card has been removed from your deck.\n";
+        std::cout << "You gained " << shopManager.GetLastRandomRemoveGold() << " gold.\n";
     }
     else
     {
