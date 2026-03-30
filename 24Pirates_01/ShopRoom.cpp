@@ -259,8 +259,9 @@ void ShopRoom::ShowMenu()
 
         std::cout << "[Room " << roomCount << "] [Shop] [General]\n";
         std::cout << "Current Gold: " << shopManager.getGold() << "\n";
-        std::cout << "My Deck: " << shopManager.GetDeckCardCount() << "/20\n";
-        std::cout << "Remove Count: " << shopManager.GetRemoveCardCount() << "/3\n\n";
+        std::cout << "My Deck: " << shopManager.GetDeckCardCount() << "/20\n\n";
+        std::cout << "[Normal: 20 gold]  [Rare: 30 gold]  [Epic: 50 gold]" << "\n";
+        std::cout << "Remove Count: " << shopManager.GetRemoveCardCount() << "/3\n\n\n";
 
         PrintShopCards(shopManager.GetShopCards());
         PrintDeckCards();
