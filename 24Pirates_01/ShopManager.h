@@ -2,9 +2,11 @@
 #include <vector>
 #include <string>
 #include "Card.h"
+#include "Player.h"
 
 class CardDatabase;
 class Deck;
+class Player;
 
 // 상점에 표시할 카드 정보를 담는 구조체
 struct ShopCardData
@@ -30,6 +32,7 @@ class ShopManager
 private:
     const CardDatabase& cardDatabase;
     Deck& playerDeck;
+    Player& player;
 
     // 현재 상점에 진열 중인 10칸 슬롯
     std::vector<ShopCardData> shopCards;
@@ -39,7 +42,7 @@ private:
 
 public:
     // 카드 DB와 플레이어 덱을 연결해서 상점 관리 객체를 생성
-    ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck);
+    ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck, Player& player);
 
     // 상점 슬롯 10칸을 만들고 초기 카드 진열을 준비
     void InitializeShop();
@@ -61,6 +64,8 @@ public:
 
     // 현재 플레이어 덱 카드 개수를 반환
     int GetDeckCardCount() const;
+
+    int GetCurrentGold() const;
 
     // 플레이어 덱에서 특정 위치의 카드를 반환
     Card* GetDeckCard(int index) const;
