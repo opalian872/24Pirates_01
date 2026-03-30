@@ -12,14 +12,15 @@ namespace
     {
         return targetIndex >= 0 &&
             targetIndex < static_cast<int>(enemies.size()) &&
-            !enemies[targetIndex]->isDead();
+            enemies[targetIndex] != nullptr &&
+            !enemies[targetIndex]->IsDead();
     }
 
     void DealDamageToTarget(std::vector<std::unique_ptr<Enemy>>& enemies, int targetIndex, int damage)
     {
         if (IsValidTarget(enemies, targetIndex))
         {
-            enemies[targetIndex]->takeDamage(damage);
+            enemies[targetIndex]->TakeDamage(damage);
         }
     }
 
@@ -27,9 +28,9 @@ namespace
     {
         for (auto& enemy : enemies)
         {
-            if (!enemy->isDead())
+            if (enemy != nullptr && !enemy->IsDead())
             {
-                enemy->takeDamage(damage);
+                enemy->TakeDamage(damage);
             }
         }
     }
@@ -44,6 +45,18 @@ namespace
         }
 
         return (std::rand() % (maxValue - minValue + 1)) + minValue;
+    }
+
+    int ScaleFromPlayerAttack(Player& player, double multiplier, int bonus = 0)
+    {
+        int damage = static_cast<int>(player.GetAttack() * multiplier) + bonus;
+
+        if (damage < 0)
+        {
+            damage = 0;
+        }
+
+        return damage;
     }
 
     bool g_randomSeeded = false;
@@ -221,14 +234,14 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
     switch (id)
     {
     case CardID::KeyboardSmash:
-        DealDamageToTarget(enemies, targetIndex, 30);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 1.0));
         break;
 
     case CardID::DoubleClickBug:
-        DealDamageToTarget(enemies, targetIndex, 18);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 0.6));
         if (IsValidTarget(enemies, targetIndex))
         {
-            DealDamageToTarget(enemies, targetIndex, 18);
+            DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 0.6));
         }
         break;
 
@@ -241,7 +254,7 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::ChairPush:
-        DealDamageToTarget(enemies, targetIndex, 20);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 0.8));
         break;
 
     case CardID::CtrlZLife:
@@ -255,20 +268,25 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         switch (randomEffect)
         {
         case 1:
-            DealDamageToTarget(enemies, targetIndex, 35);
+            DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 1.2));
             break;
+
         case 2:
             player.heal(20);
             break;
+
         case 3:
             player.addAttack(15);
             break;
+
         case 4:
             player.addDefense(15);
             break;
+
         case 5:
-            DealDamageToAll(enemies, 15);
+            DealDamageToAll(enemies, ScaleFromPlayerAttack(player, 0.5));
             break;
+
         default:
             break;
         }
@@ -276,7 +294,7 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
     }
 
     case CardID::HitTheComputer:
-        DealDamageToTarget(enemies, targetIndex, 50);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 1.5));
         break;
 
     case CardID::SuddenSleepiness:
@@ -284,7 +302,7 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::MemeAttack:
-        DealDamageToTarget(enemies, targetIndex, 25);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 0.9));
         break;
 
     case CardID::BlankMaster:
@@ -292,7 +310,7 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::LaptopFanTurboMode:
-        DealDamageToAll(enemies, 12);
+        DealDamageToAll(enemies, ScaleFromPlayerAttack(player, 0.4));
         break;
 
     case CardID::InternetDisconnected:
@@ -300,7 +318,11 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::DeleteWholeCode:
-        DealDamageToTarget(enemies, targetIndex, 60);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 2.0));
+        break;
+
+    case CardID::TeamProjectPainBuff:
+        // Passive card, not directly usable
         break;
 
     case CardID::Reboot:
@@ -308,11 +330,11 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::ShakeWifi:
-        DealDamageToTarget(enemies, targetIndex, 12);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 0.5));
         break;
 
     case CardID::DebugHell:
-        DealDamageToTarget(enemies, targetIndex, 35);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 1.2));
         break;
 
     case CardID::FileRecovery:
@@ -320,7 +342,7 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::FocusBurst:
-        // Passive card, normally not used directly
+        // Passive card, not directly usable
         break;
 
     case CardID::ServerConnect:
@@ -328,31 +350,31 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::ServerExplosion:
-        DealDamageToAll(enemies, 30);
+        DealDamageToAll(enemies, ScaleFromPlayerAttack(player, 0.8));
         break;
 
     case CardID::KeyboardMash:
-        DealDamageToTarget(enemies, targetIndex, 10);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 0.35));
         if (IsValidTarget(enemies, targetIndex))
         {
-            DealDamageToTarget(enemies, targetIndex, 10);
+            DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 0.35));
         }
         if (IsValidTarget(enemies, targetIndex))
         {
-            DealDamageToTarget(enemies, targetIndex, 10);
+            DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 0.35));
         }
         break;
 
     case CardID::CodeRampage:
-        DealDamageToTarget(enemies, targetIndex, 60);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 2.0));
         break;
 
     case CardID::Emergency:
-        // Passive card, normally not used directly
+        // Passive card, not directly usable
         break;
 
     case CardID::AssignmentCurse:
-        DealDamageToAll(enemies, 35);
+        DealDamageToAll(enemies, ScaleFromPlayerAttack(player, 1.0));
         break;
 
     case CardID::OverNightTranscendence:
@@ -364,11 +386,11 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::CodeFusion:
-        // Passive card, normally not used directly
+        // Passive card, not directly usable
         break;
 
     case CardID::CpuFullPower:
-        DealDamageToTarget(enemies, targetIndex, 70);
+        DealDamageToTarget(enemies, targetIndex, ScaleFromPlayerAttack(player, 2.3));
         break;
 
     default:

@@ -32,7 +32,8 @@ public:
     void heal(int amount);
     void addDefense(int amount);
     void addAttack(int amount);
-
+    void takeDamage(int damage); // 임시 추가
+ 
     void AddCardToDeck(Card* card);
     void AddCardToDeckByID(const CardDatabase& database, CardID id);
     void ShowMyDeck();

@@ -216,3 +216,17 @@ bool Player::GetPlayerCondition()
 {
     return playerCondition;
 }
+
+
+
+void Player::takeDamage(int damage)
+{
+    TakeDamage(damage,
+        "The defense absorbed all damage.",
+        "You took damage: ",
+        "You have fallen.",
+        "Player condition changed to false.");
+}
+
+
+
