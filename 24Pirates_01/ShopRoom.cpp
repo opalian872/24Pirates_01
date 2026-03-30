@@ -1,13 +1,10 @@
-﻿// ShopRoom.cpp
-
-#include "ShopRoom.h"
+﻿#include "ShopRoom.h"
 #include "Card.h"
 #include <iostream>
 #include <vector>
 #include <string>
-#include <algorithm>
-#include <windows.h>
 #include <limits>
+#include <windows.h>
 
 // 문자열이 너무 길면 자르고, 짧으면 공백을 채워서 고정 길이로 맞춤
 static std::string FitToWidth(const std::string& text, int width)
@@ -93,6 +90,7 @@ int ShopRoom::GetConsoleWidth()
     return csbi.srWindow.Right - csbi.srWindow.Left + 1;
 }
 
+// 현재 콘솔 창의 높이를 반환
 int ShopRoom::GetConsoleHeight()
 {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -110,6 +108,7 @@ void ShopRoom::ClearScreen()
 #endif
 }
 
+// 카드가 있는 슬롯의 박스 문자열을 생성
 std::vector<std::string> ShopRoom::MakeCardBoxLines(int cardNumber, const ShopCardData& card)
 {
     const int innerWidth = 28;
@@ -230,7 +229,7 @@ void ShopRoom::PrintDeckCards()
     }
 }
 
-
+// 상점 화면과 메뉴를 반복 출력하고 입력을 처리
 void ShopRoom::ShowMenu()
 {
     int choice = 0;
@@ -241,8 +240,7 @@ void ShopRoom::ShowMenu()
         ClearScreen();
 
         std::cout << "[Room " << roomCount << "] [Shop] [General]\n";
-        std::cout << "My Deck: " << shopManager.GetDeckCardCount() << "/20";
-        std::cout << "Current Gold: " << shopManager.getGold() << "\n\n";
+        std::cout << "My Deck: " << shopManager.GetDeckCardCount() << "/20\n\n";
 
         PrintShopCards(shopManager.GetShopCards());
         PrintDeckCards();
