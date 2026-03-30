@@ -1,11 +1,12 @@
 ﻿#include "ShopManager.h"
 #include "CardDatabase.h"
 #include "Deck.h"
+#include "Player.h"
 #include <algorithm>
 #include <random>
 
-ShopManager::ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck)
-    : cardDatabase(cardDatabase), playerDeck(playerDeck)
+ShopManager::ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck, Player& player)
+    : cardDatabase(cardDatabase), playerDeck(playerDeck), player(player)
 {
     InitializeShop();
 }
@@ -140,6 +141,11 @@ const std::vector<ShopCardData>& ShopManager::GetShopCards() const
 int ShopManager::GetDeckCardCount() const
 {
     return playerDeck.getCardCount();
+}
+
+int ShopManager::GetCurrentGold() const
+{
+    return player.getGold();
 }
 
 Card* ShopManager::GetDeckCard(int index) const
