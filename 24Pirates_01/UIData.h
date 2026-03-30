@@ -35,6 +35,16 @@ struct CardData
     {
     }
 };
+struct EnemyData
+{
+    std::string name;
+    int maxHp;
+    int currentHp;
+    int atk;
+    int def;
+    int getExp;
+    int getGold;
+};
 
 struct UIData
 {
@@ -45,6 +55,7 @@ struct UIData
     int playerDefense;
     std::vector<CardData> playerDeck;
     std::vector<CardData> playerHand;
-    const std::vector<DummyEnemy>* enemies = nullptr;
+    std::vector<EnemyData> enemies;
+    //const std::vector<DummyEnemy>* enemies = nullptr;
     std::vector<std::string> currentLog;
 };

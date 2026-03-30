@@ -47,10 +47,11 @@ private:
     UIData data; //UI에 넘겨줄 데이터 묶음
     BattleUIState battleUIState; // 어떤 화면을 렌더링할지 정해주기
     std::vector<std::string> currentLog;
-	//여기서부턴 테스트용 더미데이터입니다.
-	std::vector<DummyEnemy> enemies;
+    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<EnemyData> enemiesData;
 public:
-	BattleRoom(int roomCount, Player& player); // 원래는 BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies); Deck 생성자 추가
+	BattleRoom(int roomCount, Player& player, std::vector<std::unique_ptr<Enemy>> enemies);
+    // 원래는 BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies); Deck 생성자 추가
 	int Run();
 	void Reward();
 	void PlayerTurnRun();

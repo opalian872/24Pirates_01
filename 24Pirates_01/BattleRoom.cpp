@@ -6,13 +6,11 @@
 #include <string>
 
 
-BattleRoom::BattleRoom(int roomCount, Player& player): roomCount(roomCount), player(player),
+BattleRoom::BattleRoom(int roomCount, Player& player, std::vector<std::unique_ptr<Enemy>> enemies): roomCount(roomCount), player(player), enemies(std::move(enemies)),
 playerTurn(true), isRunning(true), battleUI(roomCount), battleUIState(BattleUIState::Default)
 //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies) Deck 포인터 추가
 {
-    enemies.push_back({ "Zombie", 1, 1, 1, 1, 1, 1 });
-    enemies.push_back({ "Zombie", 1, 1, 1, 1, 1, 1 });
-    enemies.push_back({ "Zombie", 1, 1, 1, 1, 1, 1 });
+    
 }
 
 int BattleRoom::Run() //지금 당장은 더미입니다.
@@ -121,10 +119,10 @@ void BattleRoom::Reward()
 	//   totalExp +=enemy->killExp;
 	//   totalGold +=enemy->killGold;
 	//}
-	for (const DummyEnemy& enemy : enemies)
+	for (const auto& enemy : enemies)
 	{
-		totalExp += enemy.killExp;
-		totalGold += enemy.killGold;
+		//totalExp += enemy; <<<enemy에 get, set 함수 필요
+		//totalGold += enemy.killGold;
 	}
 	//player->giveExp(); 이런 걸로 레벨업 체크 해줬으면 좋겠네요. 어떻게 UI화면에 병합할지는 나중에 생각해 보는걸로
 	//player->addGold();
@@ -184,7 +182,11 @@ std::vector<CardData> BattleRoom::PackageCards()
 }
 void BattleRoom::RenewUI()
 {
-    data.enemies = &enemies;
+    enemiesData.clear();
+    for (const auto& enemy : enemies)
+    {
+        //enemiesData.push_back(enemy->GetName(), enemy->GetMaxHP())
+    }
     data.playerName = player.GetName();
     data.playerCurrentHealth = player.GetHp();
     data.playerMaxHealth = player.GetMaxHp();;

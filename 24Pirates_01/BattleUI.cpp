@@ -212,22 +212,22 @@ void BattleUI::RenderHeader(const UIData& data)
 }
 void BattleUI::RenderEnemies(const UIData& data)
 {
-    if (data.enemies != nullptr)
+    if (!data.enemies.empty())
     {
         std::cout << " Enemies:" << '\n';
         std::cout << '\n';
-        for (int i = 0; i < data.enemies->size(); i++)
+        for (int i = 0; i < data.enemies.size(); i++)
         {
-            const DummyEnemy& enemy = (*data.enemies)[i];
+            const EnemyData& enemy = data.enemies[i];
 
             std::cout << i + 1 << ". "
                 << enemy.name
-                << " HP: " << enemy.currentHealth << "/" << enemy.maxHealth
-                << " Attack: " << enemy.attack
-                << " Defense: " << enemy.defense
+                << " HP: " << enemy.currentHp << "/" << enemy.maxHp
+                << " Attack: " << enemy.atk
+                << " Defense: " << enemy.def
                 << '\n' << '\n';
         }
-        for (int i = 3; i > data.enemies->size(); i--)
+        for (int i = 3; i > data.enemies.size(); i--)
         {
             std::cout << '\n';
         }
@@ -235,7 +235,7 @@ void BattleUI::RenderEnemies(const UIData& data)
     }
     else
     {
-        std::cout << "Enemy pointer data.enemies is nullptr" << std::endl;
+        std::cout << "Enemy data is Empty!" << std::endl;
     }
 
     return;

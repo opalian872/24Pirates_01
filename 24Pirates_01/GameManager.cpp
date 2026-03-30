@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <limits>
+#include <random>
+#include <algorithm>
 #include "GameManager.h"
 #include "ShopRoom.h"
 #include "ShopManager.h"
@@ -59,6 +61,16 @@ void GameManager::GenerateRoom()
 		if (roomCount % 3 != 0)
 		{
 			currentState = GameState::InBattle;
+            enemies.clear();
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<int> normalDist(0, 8);
+
+            for (int i = 0; i < 3; i++)
+            {
+                NormalType type = static_cast<NormalType>(normalDist(gen));
+                enemies.push_back(std::make_unique<NormalEnemy>(type, roomCount));
+            }
 		}
 		else
 		{
@@ -67,7 +79,21 @@ void GameManager::GenerateRoom()
 	}
 	else
 	{
-		currentState = GameState::InBattle;
+        currentState = GameState::InBattle;
+        enemies.clear();
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<int> bossDist(0, 1);
+        int roll = bossDist(gen);
+
+        if (roll == 0)
+        {
+            enemies.push_back(std::make_unique<BossEnemy>(BossType::SkeletonKing, roomCount));
+        }
+        else
+        {
+            enemies.push_back(std::make_unique<BossEnemy>(BossType::OrcKing, roomCount));
+        }
 	}
 }
 
@@ -88,7 +114,7 @@ void GameManager::RunStartMenu() // 여기서 StartingUI 를 불러옵니다.
 int GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. player와 vector<Enemy>, cardDatabase를 가지고 들어갈 거 같습니다.
 {
     int clearState;
-    BattleRoom battleRoom(roomCount, myPlayer);
+    BattleRoom battleRoom(roomCount, myPlayer, std::move(enemies));
     clearState = battleRoom.Run();
     return clearState; // clearState 가 0이면 일반방 클리어, 1이면 GameOver, 2이면 Clear
 }
