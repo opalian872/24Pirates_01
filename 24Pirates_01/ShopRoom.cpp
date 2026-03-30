@@ -1,13 +1,10 @@
-﻿// ShopRoom.cpp
-
-#include "ShopRoom.h"
+﻿#include "ShopRoom.h"
 #include "Card.h"
 #include <iostream>
 #include <vector>
 #include <string>
-#include <algorithm>
-#include <windows.h>
 #include <limits>
+#include <windows.h>
 
 // 문자열이 너무 길면 자르고, 짧으면 공백을 채워서 고정 길이로 맞춤
 static std::string FitToWidth(const std::string& text, int width)
@@ -93,6 +90,7 @@ int ShopRoom::GetConsoleWidth()
     return csbi.srWindow.Right - csbi.srWindow.Left + 1;
 }
 
+// 현재 콘솔 창의 높이를 반환
 int ShopRoom::GetConsoleHeight()
 {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -110,19 +108,38 @@ void ShopRoom::ClearScreen()
 #endif
 }
 
+// 카드가 있는 슬롯의 박스 문자열을 생성
 std::vector<std::string> ShopRoom::MakeCardBoxLines(int cardNumber, const ShopCardData& card)
 {
     const int innerWidth = 28;
     std::vector<std::string> lines;
 
-    std::vector<std::string> descLines = WrapText(card.description, innerWidth - 1, 5);
+    std::vector<std::string> descLines = WrapText(card.description, innerWidth - 1, 4);
+
+    std::string priceText;
+    if (card.rarity == "Normal")
+    {
+        priceText = "Price: 20";
+    }
+    else if (card.rarity == "Rare")
+    {
+        priceText = "Price: 30";
+    }
+    else if (card.rarity == "Epic")
+    {
+        priceText = "Price: 50";
+    }
+    else
+    {
+        priceText = "Price: 0";
+    }
 
     lines.push_back("+" + std::string(innerWidth, '-') + "+");
     lines.push_back("| " + FitToWidth("[" + std::to_string(cardNumber) + "]", innerWidth - 1) + "|");
     lines.push_back("| " + FitToWidth(card.name, innerWidth - 1) + "|");
     lines.push_back("+" + std::string(innerWidth, '-') + "+");
     lines.push_back("| " + FitToWidth("Rarity: " + card.rarity, innerWidth - 1) + "|");
-    lines.push_back("| " + FitToWidth("", innerWidth - 1) + "|");
+    lines.push_back("| " + FitToWidth(priceText, innerWidth - 1) + "|");
     lines.push_back("| " + FitToWidth("Description", innerWidth - 1) + "|");
     lines.push_back("+" + std::string(innerWidth, '-') + "+");
 
@@ -147,11 +164,11 @@ std::vector<std::string> ShopRoom::MakeEmptyCardBoxLines(int cardNumber)
     lines.push_back("| " + FitToWidth("", innerWidth - 1) + "|");
     lines.push_back("+" + std::string(innerWidth, '-') + "+");
     lines.push_back("| " + FitToWidth("Rarity: ", innerWidth - 1) + "|");
-    lines.push_back("| " + FitToWidth("", innerWidth - 1) + "|");
+    lines.push_back("| " + FitToWidth("Price: ", innerWidth - 1) + "|");
     lines.push_back("| " + FitToWidth("Description", innerWidth - 1) + "|");
     lines.push_back("+" + std::string(innerWidth, '-') + "+");
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 4; i++)
     {
         lines.push_back("| " + FitToWidth("", innerWidth - 1) + "|");
     }
@@ -230,7 +247,7 @@ void ShopRoom::PrintDeckCards()
     }
 }
 
-
+// 상점 화면과 메뉴를 반복 출력하고 입력을 처리
 void ShopRoom::ShowMenu()
 {
     int choice = 0;
@@ -241,8 +258,9 @@ void ShopRoom::ShowMenu()
         ClearScreen();
 
         std::cout << "[Room " << roomCount << "] [Shop] [General]\n";
-        std::cout << "My Deck: " << shopManager.GetDeckCardCount() << "/20";
-        std::cout << "Current Gold: " << shopManager.GetCurrentGold() << "\n\n";
+        std::cout << "Current Gold: " << shopManager.getGold() << "\n";
+        std::cout << "My Deck: " << shopManager.GetDeckCardCount() << "/20\n";
+        std::cout << "Remove Count: " << shopManager.GetRemoveCardCount() << "/3\n\n";
 
         PrintShopCards(shopManager.GetShopCards());
         PrintDeckCards();
@@ -252,7 +270,7 @@ void ShopRoom::ShowMenu()
         std::cout << "[1]: Buy Card\n";
         std::cout << "[2]: Remove Card From Deck\n";
         std::cout << "[3]: Random Remove From Deck\n";
-        std::cout << "[4]: Shop Reset\n";
+        std::cout << "[4]: Shop Reset (1 time only)\n";
         std::cout << "[5]: Exit Shop\n";
         std::cout << "\nChoose:: ";
 
@@ -312,7 +330,7 @@ void ShopRoom::BuyCard()
     }
     else
     {
-        std::cout << "Invalid choice or empty slot.\n";
+        std::cout << "Invalid choice, empty slot, or not enough gold.\n";
     }
 
     std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
@@ -323,6 +341,15 @@ void ShopRoom::BuyCard()
 // 사용자가 선택한 덱 카드를 제거
 void ShopRoom::RemoveCard()
 {
+    if (!shopManager.CanRemoveCard())
+    {
+        std::cout << "\nYou can only remove cards 3 times.\n";
+        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+        std::cout << "Press Enter to return to shop.";
+        std::cin.get();
+        return;
+    }
+
     int cardChoice;
 
     std::cout << "\nPlease choose the deck card you want to remove: ";
@@ -368,12 +395,17 @@ void ShopRoom::RemoveRandomCard()
     std::cin.get();
 }
 
-// 차단되지 않은 카드들만 다시 뽑아 상점을 새로고침
 void ShopRoom::ResetShop()
 {
-    shopManager.ResetShop();
-
-    std::cout << "\nShop has been reset.\n";
+    if (shopManager.CanResetShop())
+    {
+        shopManager.ResetShop();
+        std::cout << "\nShop has been reset.\n";
+    }
+    else
+    {
+        std::cout << "\nShop reset can only be used once.\n";
+    }
 
     std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
     std::cout << "Press Enter to return to shop.";

@@ -24,6 +24,7 @@ public:
     void GainExp(int expAmount, std::string gainEMsg); // gainexp == 받는 경험치 임시 변수
     void LevelUp(std::string levelMsg);
     void GainGold(int goldAmount, std::string gainGMsg); // gaingold == 받는 골드 임시 변수
+    bool SubGold(int goldAmount);
     void TakeDamage(int damage, std::string takeDMsg1, std::string takeDMsg2, std::string takeDMsg3, std::string takeDMsg4); // damage == 받는 대미지 임시 변수
     void Heal(int healAmount, std::string healMsg1, std::string healMsg2); // heal == 받는 회복 임시 변수
     void UseCard();
