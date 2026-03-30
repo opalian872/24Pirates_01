@@ -6,14 +6,13 @@
 #include <string>
 
 
-BattleRoom::BattleRoom(int roomCount, Player& player, Deck* playerDeck): roomCount(roomCount), player(player), playerDeck(playerDeck),
+BattleRoom::BattleRoom(int roomCount, Player& player): roomCount(roomCount), player(player),
 playerTurn(true), isRunning(true), battleUI(roomCount), battleUIState(BattleUIState::Default)
 //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies) Deck 포인터 추가
 {
-    //더미용 enemy
-	enemies.push_back({ "Goblin", 1, 1, 1, 1, 1, 1 });
-	enemies.push_back({ "Dragon", 1, 1, 1, 1, 1, 1 });
-    enemies.push_back({ "KyeongHo Park", 1, 1, 1, 1, 1, 1 });
+    enemies.push_back({ "Zombie", 1, 1, 1, 1, 1, 1 });
+    enemies.push_back({ "Zombie", 1, 1, 1, 1, 1, 1 });
+    enemies.push_back({ "Zombie", 1, 1, 1, 1, 1, 1 });
 }
 
 int BattleRoom::Run() //지금 당장은 더미입니다.
@@ -173,22 +172,15 @@ std::string BattleRoom::RarityToString(CardRarity rarity) const
         return "Unknown";
     }
 }
-std::vector<CardData> BattleRoom::PackageCards(Deck* playerDeck)
+std::vector<CardData> BattleRoom::PackageCards()
 {
     std::vector<CardData> cardsData;
-    if (playerDeck == nullptr)
-    {
-        std::cout << "PlayerDeck is nullptr!" << std::endl;
-    }
-    else
-    {
-        for (int i = 0; i < playerDeck->getCardCount(); i++)
+    for (int i = 0; i < player.playerDeck.getCardCount(); i++)
         {
-            CardData cardData(playerDeck->getCard(i)->getID(), playerDeck->getCard(i)->getName(), RarityToString(playerDeck->getCard(i)->getRarity()), playerDeck->getCard(i)->getEffectText());
+        CardData cardData(player.playerDeck.getCard(i)->getID(), player.playerDeck.getCard(i)->getName(), RarityToString(player.playerDeck.getCard(i)->getRarity()), player.playerDeck.getCard(i)->getEffectText());
             cardsData.push_back(cardData);
         }
-        return cardsData;
-    }
+    return cardsData;
 }
 void BattleRoom::RenewUI()
 {
@@ -198,12 +190,12 @@ void BattleRoom::RenewUI()
     data.playerMaxHealth = player.GetMaxHp();;
     data.playerAttack = player.GetAttack();
     data.playerDefense = player.GetDefense();
-    data.playerDeck = PackageCards(playerDeck);
+    data.playerDeck = PackageCards();
     //아직 Hand가 없으므로 Deck 앞의 5장으로
     std::vector <CardData> cardsData;
     for (int i = 0; i < 5; i++)
     {
-        CardData cardData(playerDeck->getCard(i)->getID(), playerDeck->getCard(i)->getName(), RarityToString(playerDeck->getCard(i)->getRarity()), playerDeck->getCard(i)->getEffectText());
+        CardData cardData(player.playerDeck.getCard(i)->getID(), player.playerDeck.getCard(i)->getName(), RarityToString(player.playerDeck.getCard(i)->getRarity()), player.playerDeck.getCard(i)->getEffectText());
         cardsData.push_back(cardData);
     }
     data.playerHand = cardsData; 

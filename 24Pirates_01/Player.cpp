@@ -15,8 +15,6 @@ void Player::PlayerMaking(std::string inname, int inlevel, int inmaxHp, int inhp
     gold = ingold;
     playerCondition = inplayerCondition;
 
-    CreateStarterDeck();
-
     std::cout << "Player's name : " << playerName << std::endl;
     std::cout << "Player's level : " << level <<std::endl;
     std::cout << "Player's Hp : " << hp << "/" << maxHp << std::endl;
@@ -27,11 +25,11 @@ void Player::PlayerMaking(std::string inname, int inlevel, int inmaxHp, int inhp
 
 }
 
-void Player::CreateStarterDeck()
+void Player::CreateStarterDeck(const CardDatabase& database)
 {
-    CardDatabase database;
-
     playerDeck.addCardByID(database, CardID::Strike);
+    playerDeck.addCardByID(database, CardID::Heal);
+    playerDeck.addCardByID(database, CardID::Whirlwind);
     playerDeck.addCardByID(database, CardID::Strike);
     playerDeck.addCardByID(database, CardID::Heal);
     playerDeck.addCardByID(database, CardID::DefenseBoost);

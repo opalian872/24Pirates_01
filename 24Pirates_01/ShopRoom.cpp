@@ -242,7 +242,7 @@ void ShopRoom::ShowMenu()
 
         std::cout << "[Room " << roomCount << "] [Shop] [General]\n";
         std::cout << "My Deck: " << shopManager.GetDeckCardCount() << "/20";
-        std::cout << "Current Gold: " << shopManager.getGold() << "\n\n";
+        std::cout << "Current Gold: " << shopManager.GetCurrentGold() << "\n\n";
 
         PrintShopCards(shopManager.GetShopCards());
         PrintDeckCards();

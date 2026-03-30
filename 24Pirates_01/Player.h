@@ -17,11 +17,10 @@ private:
     int gold;
     bool playerCondition; // 플레이어의 생존상태 유무. 기본값 true
 
-    Deck playerDeck;
 
 public:
     void PlayerMaking(std::string inname, int inlevel, int inmaxHp, int inhp, int inattack, int indefense, int inexp, int ingold, bool inplayerCondition);
-    void CreateStarterDeck();
+    void CreateStarterDeck(const CardDatabase& database);
     void GainExp(int expAmount); // gainexp == 받는 경험치 임시 변수
     void GainGold(int goldAmount); // gaingold == 받는 골드 임시 변수
     void TakeDamage(int damage); // damage == 받는 대미지 임시 변수
@@ -44,4 +43,5 @@ public:
     int GetGold();
     bool GetPlayerCondition();
 
+    Deck playerDeck;
 };

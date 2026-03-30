@@ -145,7 +145,7 @@ int ShopManager::GetDeckCardCount() const
 
 int ShopManager::GetCurrentGold() const
 {
-    return player.getGold();
+    return player.GetGold();
 }
 
 Card* ShopManager::GetDeckCard(int index) const
