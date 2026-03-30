@@ -131,6 +131,7 @@
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Hand.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="NormalEnemy.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyDummy.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Hand.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="NormalEnemy.h" />
     <ClInclude Include="PlayerDummy.h" />
