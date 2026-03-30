@@ -3,15 +3,19 @@
 #include <iostream>
 #include <limits>
 #include "GameManager.h"
-<<<<<<< Updated upstream
-=======
 #include "ShopRoom.h"
 #include "ShopManager.h"
->>>>>>> Stashed changes
+#include "Player.h"
 
 GameManager::GameManager() :currentState(GameState::Start), roomCount(0), isRunning(true)
 {
 
+
+    playerDeck.addCardByID(cardDatabase, CardID::Strike);
+    playerDeck.addCardByID(cardDatabase, CardID::Heal);
+    playerDeck.addCardByID(cardDatabase, CardID::Whirlwind);
+    playerDeck.addCardByID(cardDatabase, CardID::Strike);
+    playerDeck.addCardByID(cardDatabase, CardID::Heal);
 }
 
 void GameManager::Run()
@@ -23,13 +27,24 @@ void GameManager::Run()
 		case GameState::Start:
 			RunStartMenu();
 			break;
-		case GameState::InBattle:
-			RunBattleRoom();
-			if (currentState != GameState::GameOver)
-			{
-				GenerateRoom();
-			}
-			break;
+        case GameState::InBattle:
+        {
+            int battleResult = RunBattleRoom();
+            if (battleResult == 1)
+            {
+                currentState = GameState::GameOver;
+            }
+            else if (battleResult == 2)
+            {
+                currentState = GameState::Clear;
+            }
+            else
+            {
+                roomCount++;
+                GenerateRoom();
+            }
+            break;
+        }
 		case GameState::InShop:
 			RunShopRoom();
 			GenerateRoom();
@@ -70,42 +85,27 @@ void GameManager::RunStartMenu() // 여기서 StartingUI 를 불러옵니다.
 	std::cin >> inputName;
 	startMenuUI.ClearScreen();
 	startMenuUI.Render(inputName);
+    myPlayer.PlayerMaking(inputName, 1, 200, 200, 30, 0, 0, 0, true);
     std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n'); //전에 입력 받았으므로
 	WaitForEnter();
 	currentState = GameState::InBattle;
 	roomCount++;
 }
-void GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. player와 vector<Enemy>, cardDatabase를 가지고 들어갈 거 같습니다.
+int GameManager::RunBattleRoom() // 여기서 BattleRoom을 불러옵니다. player와 vector<Enemy>, cardDatabase를 가지고 들어갈 거 같습니다.
 {
-	std::cout << "Current Room: " << roomCount << " Battle has begun!" << std::endl;
-    BattleUI battleUI = BattleUI(roomCount);
-    if (roomCount != 10)
-	{
-        battleUI.Render();
-		roomCount++;
-		WaitForEnter();
-	}
-	else
-	{
-		std::cout << "Current Room: " << roomCount <<" Battle has ended. You Lost" << std::endl;
-		currentState = GameState::GameOver;
-	}
+    int clearState;
+    BattleRoom battleRoom(roomCount, myPlayer, &playerDeck);
+    clearState = battleRoom.Run();
+    return clearState; // clearState 가 0이면 일반방 클리어, 1이면 GameOver, 2이면 Clear
 }
 void GameManager::RunShopRoom() //여기서 ShopRoom을 불러옵니다
 {
-<<<<<<< Updated upstream
-	std::cout << "Current Room: " << roomCount << " In Shop!" << std::endl;
-	std::cout << "Shopping ended." << std::endl;
-	WaitForEnter();
-	roomCount++;
-=======
-    ShopManager shopManager(cardDatabase, playerDeck);
+    ShopManager shopManager(cardDatabase, playerDeck, myPlayer);
     ShopRoom shopRoom(roomCount, shopManager);
     shopRoom.ShowMenu();
 
     WaitForEnter();
     roomCount++;
->>>>>>> Stashed changes
 }
 void GameManager::RunGameOver()//여기서 Game Over 스크린을 불러옵니다
 {

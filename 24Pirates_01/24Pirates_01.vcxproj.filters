@@ -15,24 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BattleRoom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BattleUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StartMenuUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-=======
-    <ClCompile Include="ShopRoom.cpp">
+    <ClCompile Include="BossEnemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Card.cpp">
@@ -44,30 +33,42 @@
     <ClCompile Include="Deck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ShopManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
->>>>>>> Stashed changes
+    <ClCompile Include="ShopRoom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StartMenuUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BattleRoom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BattleUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StartMenuUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< Updated upstream
-=======
-    <ClInclude Include="ShopRoom.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CardTypes.h">
+    <ClInclude Include="BossEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Card.h">
@@ -76,18 +77,44 @@
     <ClInclude Include="CardDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CardTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Deck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerDummy.h">
+    <ClInclude Include="Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EnemyDummy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalEnemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDummy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ShopManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
->>>>>>> Stashed changes
+    <ClInclude Include="ShopRoom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StartMenuUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 ﻿//BattleUI.h
 #pragma once
+#include "UIData.h"
 #include <windows.h>
 #include <string>
 class BattleUI
@@ -8,14 +9,18 @@ private:
     int consoleWidth;
     int consoleHeight;
     const int roomCount;
-    std::string left;
-    std::string right;
 public:
 	BattleUI(int roomCount);
     void ClearScreen();
-	void Render();
+	void Render(const UIData& data, BattleUIState battleUIState);
     int GetConsoleWidth();
     int GetConsoleHeight();
-    void RenderHeader(const std::string& left, const std::string& right);
+    std::vector<std::string> MakeCardBoxLines(int cardNumber, const CardData& card);
+    std::vector<std::string> MakeEmptyCardBoxLines(int cardNumber);
+    void RenderHeader(const UIData& data);
+    void RenderEnemies(const UIData& data);
+    void RenderHand(const UIData& data);
+    void RenderDeck(const UIData& data);
+    void PrintCardGroupHorizontal(const std::vector<CardData>& cards, int startIndex, int endIndex);
 };
 

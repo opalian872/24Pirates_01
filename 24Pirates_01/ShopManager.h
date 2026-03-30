@@ -2,9 +2,11 @@
 #include <vector>
 #include <string>
 #include "Card.h"
+#include "Player.h"
 
 class CardDatabase;
 class Deck;
+class Player;
 
 // 상점에 표시할 카드 정보를 담는 구조체
 struct ShopCardData
@@ -30,6 +32,7 @@ class ShopManager
 private:
     const CardDatabase& cardDatabase;
     Deck& playerDeck;
+    Player& player;
 
     // 현재 상점에 진열 중인 10칸 슬롯
     std::vector<ShopCardData> shopCards;
@@ -37,9 +40,30 @@ private:
     // 다시 상점에 나오면 안 되는 카드 ID 목록
     std::vector<CardID> blockedCardIDs;
 
+    // 카드 희귀도에 따라 가격을 받아옴
+    int GetCardPrice(const std::string& rarity) const;
+
+    // 해당 카드 ID가 이미 상점 차단 목록에 있는지 확인
+    bool IsBlocked(CardID id) const;
+
+    // 카드 ID를 차단 목록에 추가해서 다시 상점에 나오지 못하게 함
+    void AddBlockedCard(CardID id);
+
+    // 카드 희귀도 enum 값을 문자열로 변환
+    std::string RarityToString(CardRarity rarity) const;
+
+    // Card 객체를 상점 출력용 데이터로 변환
+    ShopCardData ConvertCardToShopData(Card* card) const;
+
+    // 상점 리셋을 했는지 확인
+    bool hasReset;
+
+    // 카드 제거 횟수
+    int removeCardCount;
+
 public:
     // 카드 DB와 플레이어 덱을 연결해서 상점 관리 객체를 생성
-    ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck);
+    ShopManager(const CardDatabase& cardDatabase, Deck& playerDeck, Player& player);
 
     // 상점 슬롯 10칸을 만들고 초기 카드 진열을 준비
     void InitializeShop();
@@ -53,6 +77,12 @@ public:
     // 플레이어 덱에서 선택한 카드를 제거하고 상점 재등장을 막음
     bool RemoveCard(int deckIndex);
 
+    // 카드 제거가 가능한지 확인
+    bool CanRemoveCard() const;
+
+    // 카드 제거 횟수 반환
+    int GetRemoveCardCount() const;
+
     // 플레이어 덱에서 카드를 랜덤으로 1장 제거하고 상점 재등장을 막음
     bool RemoveRandomCard();
 
@@ -62,19 +92,11 @@ public:
     // 현재 플레이어 덱 카드 개수를 반환
     int GetDeckCardCount() const;
 
+    int GetGold() const;
+
     // 플레이어 덱에서 특정 위치의 카드를 반환
     Card* GetDeckCard(int index) const;
 
-private:
-    // 해당 카드 ID가 이미 상점 차단 목록에 있는지 확인
-    bool IsBlocked(CardID id) const;
-
-    // 카드 ID를 차단 목록에 추가해서 다시 상점에 나오지 못하게 함
-    void AddBlockedCard(CardID id);
-
-    // 카드 희귀도 enum 값을 문자열로 변환
-    std::string RarityToString(CardRarity rarity) const;
-
-    // Card 객체를 상점 출력용 데이터로 변환
-    ShopCardData ConvertCardToShopData(Card* card) const;
+    // 상점 리셋이 가능한지 확인
+    bool CanResetShop() const;
 };

@@ -1,8 +1,12 @@
-﻿#pragma once
+﻿// ShopRoom.h
+
+#pragma once
 #include <windows.h>
 #include <vector>
 #include <string>
 #include "ShopManager.h"
+
+class Card;
 
 // 상점 화면 출력과 입력 처리를 담당하는 클래스
 class ShopRoom
@@ -11,15 +15,14 @@ private:
     int roomCount;
     int consoleWidth;
     int consoleHeight;
-
     ShopManager& shopManager;
 
 public:
     ShopRoom(int roomCount, ShopManager& shopManager);
 
-    // 현재 콘솔 창의 너비와 높이를 반환
     int GetConsoleWidth();
     int GetConsoleHeight();
+    
 
     void ClearScreen();
 
@@ -31,6 +34,8 @@ public:
     void ResetShop();
     void ExitShop();
 
+
+    
     // 카드가 있는 슬롯의 박스 출력 문자열을 생성
     std::vector<std::string> MakeCardBoxLines(int cardNumber, const ShopCardData& card);
 
@@ -45,4 +50,5 @@ public:
 
     // 현재 플레이어 덱 목록을 출력
     void PrintDeckCards();
+
 };
