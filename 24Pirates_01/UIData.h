@@ -18,6 +18,24 @@ enum class BattleUIState
     EnemyTurn,
 };
 
+struct CardData
+{
+    CardID id;
+    std::string name;
+    std::string rarity;
+    std::string effectText;
+    bool isEmpty;
+    CardData()
+        : id(CardID::Strike), name(""), rarity(""), effectText(""), isEmpty(true)
+    {
+    }
+
+    CardData(CardID id, const std::string& name, const std::string& rarity, const std::string& effectText)
+        : id(id), name(name), rarity(rarity), effectText(effectText), isEmpty(false)
+    {
+    }
+};
+
 struct UIData
 {
     std::string playerName;
@@ -25,6 +43,8 @@ struct UIData
     int playerMaxHealth;
     int playerAttack;
     int playerDefense;
-    Deck* playerDeck = nullptr;
+    std::vector<CardData> playerDeck;
+    std::vector<CardData> playerHand;
     const std::vector<DummyEnemy>* enemies = nullptr;
+    std::vector<std::string> currentLog;
 };

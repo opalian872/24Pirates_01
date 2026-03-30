@@ -1,10 +1,12 @@
 ﻿//BattleRoom.cpp
 #include <iostream>
 #include "BattleRoom.h"
+#include "Card.h"
 #include <random> //현재는 10번 방 클리어 or 실패 나타내기 위해 쓴 랜덤함수.
+#include <string>
 
 
-BattleRoom::BattleRoom(int roomCount, Deck* playerDeck): roomCount(roomCount), playerDeck(playerDeck),
+BattleRoom::BattleRoom(int roomCount, Player& player, Deck* playerDeck): roomCount(roomCount), player(player), playerDeck(playerDeck),
 playerTurn(true), isRunning(true), battleUI(roomCount), battleUIState(BattleUIState::Default)
 //원래는 BattleRoom::BattleRoom(Player& player, std::vector<std::unique_ptr<Enemy>> enemies) Deck 포인터 추가
 {
@@ -20,6 +22,7 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
     RenewUI();
     WaitForEnter();
     int choice = 0;
+
     /*while (player.currentHealth > 0 && enemies.size() > 0)
     {
         std::cin >> choice;
@@ -156,15 +159,55 @@ void BattleRoom::WaitForEnter()
     std::cin.get();
 }
 
+std::string BattleRoom::RarityToString(CardRarity rarity) const
+{
+    switch (rarity)
+    {
+    case CardRarity::Normal:
+        return "Normal";
+    case CardRarity::Rare:
+        return "Rare";
+    case CardRarity::Epic:
+        return "Epic";
+    default:
+        return "Unknown";
+    }
+}
+std::vector<CardData> BattleRoom::PackageCards(Deck* playerDeck)
+{
+    std::vector<CardData> cardsData;
+    if (playerDeck == nullptr)
+    {
+        std::cout << "PlayerDeck is nullptr!" << std::endl;
+    }
+    else
+    {
+        for (int i = 0; i < playerDeck->getCardCount(); i++)
+        {
+            CardData cardData(playerDeck->getCard(i)->getID(), playerDeck->getCard(i)->getName(), RarityToString(playerDeck->getCard(i)->getRarity()), playerDeck->getCard(i)->getEffectText());
+            cardsData.push_back(cardData);
+        }
+        return cardsData;
+    }
+}
 void BattleRoom::RenewUI()
 {
     data.enemies = &enemies;
-    data.playerName = player.name;
-    data.playerCurrentHealth = player.currentHealth;
-    data.playerMaxHealth = player.maxHealth;
-    data.playerAttack = player.attack;
-    data.playerDefense = player.defense;
-    data.playerDeck = playerDeck;
+    data.playerName = player.GetName();
+    data.playerCurrentHealth = player.GetHp();
+    data.playerMaxHealth = player.GetMaxHp();;
+    data.playerAttack = player.GetAttack();
+    data.playerDefense = player.GetDefense();
+    data.playerDeck = PackageCards(playerDeck);
+    //아직 Hand가 없으므로 Deck 앞의 5장으로
+    std::vector <CardData> cardsData;
+    for (int i = 0; i < 5; i++)
+    {
+        CardData cardData(playerDeck->getCard(i)->getID(), playerDeck->getCard(i)->getName(), RarityToString(playerDeck->getCard(i)->getRarity()), playerDeck->getCard(i)->getEffectText());
+        cardsData.push_back(cardData);
+    }
+    data.playerHand = cardsData; 
+    data.currentLog = currentLog;
     battleUI.Render(data, battleUIState);
     return;
 }
