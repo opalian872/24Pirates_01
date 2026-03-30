@@ -24,14 +24,16 @@ struct CardData
     std::string name;
     std::string rarity;
     std::string effectText;
+    bool isPlayableInHand;
+    TargetType targetType;
     bool isEmpty;
     CardData()
-        : id(CardID::Strike), name(""), rarity(""), effectText(""), isEmpty(true)
+        : id(CardID::Strike), name(""), rarity(""), effectText(""), isPlayableInHand(false), targetType(TargetType::None), isEmpty(true)
     {
     }
 
-    CardData(CardID id, const std::string& name, const std::string& rarity, const std::string& effectText)
-        : id(id), name(name), rarity(rarity), effectText(effectText), isEmpty(false)
+    CardData(CardID id, const std::string& name, const std::string& rarity, const std::string& effectText, bool isPlayableInHand, TargetType targetType)
+        : id(id), name(name), rarity(rarity), effectText(effectText), isPlayableInHand(isPlayableInHand), targetType(targetType), isEmpty(false)
     {
     }
 };

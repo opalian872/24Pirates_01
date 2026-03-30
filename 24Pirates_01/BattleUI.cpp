@@ -99,38 +99,36 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
     {
     case BattleUIState::Default:
         ClearScreen();
-        std::cout << " [Room " << roomCount << "] [Battle] Ruined Dungeon\n\n";
-        //left = "["+data.playerName+"] Health 180/200 Attack: 10 Defense: 20";
-        //right = "Buffs: [Attack+2(1turn)][Defense+3(2turn)]";
         RenderHeader(data);
         std::cout << '\n';
         RenderEnemies(data);
         RenderHand(data);
-        /*std::cout << " [1] {Strike} Attack a single target for N damage." << '\n';
-        std::cout << " [2] {Shake & roll} Choose two cards to discard. Draw two cards from your deck" << '\n';
-        std::cout << " [3] {P: Increase attack} Increase attack by 2." << '\n';
-        std::cout << " [4] {P: School Days} Increase your defense be 2 for each enemy on the field" << '\n';
-        std::cout << " [5] {P: Mundo Goes Where He Pleases} Regenerate 2 Health after enemy's turn ends." << '\n';
-        std::cout << '\n';
-        std::cout << '\n';
-        std::cout << " //손패 최대 10장까지 가능하게" << '\n';
-        std::cout << '\n';
-        std::cout << '\n';*/
-        std::cout << std::string(consoleWidth - 1, '-') << '\n';
-        std::cout << '\n';
-        std::cout << " Commands:" << '\n';
-        std::cout << " [1]: Choose card to play" << '\n';
-        std::cout << " [2]: Check my deck" << '\n';
-        std::cout << " [3]: Battle Log" << '\n';
-        std::cout << " [4]: End Turn" << '\n';
-        std::cout << '\n';
-
-        std::cout << " Choose:: ";
+        RenderCommands(data, battleUIState);
         break;
-
-
+    case BattleUIState::ChooseCard:
+        ClearScreen();
+        RenderHeader(data);
+        std::cout << '\n';
+        RenderEnemies(data);
+        RenderHand(data);
+        RenderCommands(data, battleUIState);
+        break;
+    case BattleUIState::ChooseCardTarget:
+        ClearScreen();
+        RenderHeader(data);
+        std::cout << '\n';
+        RenderEnemies(data);
+        RenderHand(data);
+        RenderCommands(data, battleUIState);
+        break;
+    case BattleUIState::CheckDeck:
+        ClearScreen();
+        RenderHeader(data);
+        std::cout << '\n';
+        RenderDeck(data);
+        RenderCommands(data, battleUIState);
+        break;
     }
-    
     return;
 }
 
@@ -200,6 +198,7 @@ std::vector<std::string> BattleUI::MakeEmptyCardBoxLines(int cardNumber)
 
 void BattleUI::RenderHeader(const UIData& data)
 {
+    std::cout << " [Room " << roomCount << "] [Battle] Ruined Dungeon\n\n";
     std::string left;
     std::string right;
     int deckSize = data.playerDeck.size();
@@ -293,13 +292,87 @@ void BattleUI::RenderDeck(const UIData& data)
 
 void BattleUI::RenderCommands(const UIData& data, BattleUIState battleUIState)
 {
+    std::cout << std::string(consoleWidth - 1, '-') << '\n';
+    std::cout << '\n';
     switch (battleUIState)
     {
     case BattleUIState::Default:
+        std::cout << " Commands:" << '\n';
+        std::cout << " [1]: Choose card to play" << '\n';
+        std::cout << " [2]: Check my deck" << '\n';
+        std::cout << " [3]: Battle Log" << '\n';
+        std::cout << " [0]: End Turn" << '\n';
+        std::cout << '\n';
+        std::cout << " Choose:: ";
+        break;
 
+    case BattleUIState::ChooseCard:
+    {
+        std::cout << " Commands: Choose Card to Play" << '\n';
+
+        int commandNumber = 1;
+        for (const CardData& card : data.playerHand)
+        {
+            if (card.isEmpty)
+            {
+                continue;
+            }
+
+            if (!card.isPlayableInHand)
+            {
+                continue;
+            }
+
+            std::cout << " [" << commandNumber << "]: {" << card.name << "}" << '\n';
+            commandNumber++;
+        }
+
+        if (commandNumber == 1)
+        {
+            std::cout << " No playable cards in hand." << '\n';
+        }
+
+        std::cout << " [0]: Return to previous" << '\n';
+        std::cout << '\n';
+        std::cout << " Choose:: ";
         break;
     }
-    return;
+
+    case BattleUIState::ChooseCardTarget:
+    {
+        std::cout << " Commands: Choose Target" << '\n';
+
+        for (int i = 0; i < static_cast<int>(data.enemies.size()); i++)
+        {
+            std::cout << " [" << i + 1 << "]: " << data.enemies[i].name << '\n';
+        }
+
+        if (data.enemies.empty())
+        {
+            std::cout << " No enemies available." << '\n';
+        }
+
+        std::cout << " [0]: Return to previous" << '\n';
+        std::cout << '\n';
+        std::cout << " Choose:: ";
+        break;
+    }
+
+    case BattleUIState::CheckDeck:
+        std::cout << " Commands: Check My Deck" << '\n';
+        std::cout << " [0]: Return to previous" << '\n';
+        std::cout << '\n';
+        std::cout << " Choose:: ";
+        break;
+
+    case BattleUIState::EnemyTurn:
+        std::cout << " Enemy Turn..." << '\n';
+        break;
+
+    default:
+        std::cout << " Choose:: ";
+        break;
+    }
 }
 
 void BattleUI::PrintCardGroupHorizontal(const std::vector<CardData>& cards, int startIndex, int endIndex)

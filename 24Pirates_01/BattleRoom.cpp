@@ -198,7 +198,7 @@ std::vector<CardData> BattleRoom::PackageDeck()
     std::vector<CardData> cardsData;
     for (int i = 0; i < player.playerDeck.getCardCount(); i++)
         {
-        CardData cardData(player.playerDeck.getCard(i)->getID(), player.playerDeck.getCard(i)->getName(), RarityToString(player.playerDeck.getCard(i)->getRarity()), player.playerDeck.getCard(i)->getEffectText());
+        CardData cardData(player.playerDeck.getCard(i)->getID(), player.playerDeck.getCard(i)->getName(), RarityToString(player.playerDeck.getCard(i)->getRarity()), player.playerDeck.getCard(i)->getEffectText(), player.playerDeck.getCard(i)->IsPlayableInHand(), player.playerDeck.getCard(i)->getTargetType());
             cardsData.push_back(cardData);
         }
     return cardsData;
@@ -209,7 +209,7 @@ std::vector<CardData> BattleRoom::PackageHand()
     std::vector<CardData> cardsData;
     for (int i = 0; i < player.playerHand.getCardCount(); i++)
     {
-        CardData cardData(player.playerHand.getCard(i)->getID(), player.playerHand.getCard(i)->getName(), RarityToString(player.playerHand.getCard(i)->getRarity()), player.playerHand.getCard(i)->getEffectText());
+        CardData cardData(player.playerHand.getCard(i)->getID(), player.playerHand.getCard(i)->getName(), RarityToString(player.playerHand.getCard(i)->getRarity()), player.playerHand.getCard(i)->getEffectText(), player.playerHand.getCard(i)->IsPlayableInHand(), player.playerHand.getCard(i)->getTargetType());
         cardsData.push_back(cardData);
     }
     return cardsData;
