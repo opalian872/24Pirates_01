@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 // 스킬 타입 구분 (일반 / 고유)
 enum class SkillType
@@ -39,6 +40,18 @@ protected:
 public:
     Enemy(std::string name, int baseHp, int baseAtk, int baseDef, int baseExp, int baseGold, int roomCount);
     virtual ~Enemy() = default;
+
+    std::string GetName() const { return engName; }
+    int GetMaxHp() const { return maxHp; }
+    int GetCurrentHp() const { return currentHp; }
+    int GetAtk() const { return atk; }
+    int GetDef() const { return def; }
+    int GetExp() const { return getExp; }
+    int GetGold() const { return getGold; }
+
+    void SetAtk(int newAtk) { atk = (std::max)(0, newAtk); }
+    void SetDef(int newDef) { def = (std::max)(0, newDef); }
+    void SetCurrentHp(int newHp) { currentHp = (std::max)(0, (std::min)(newHp, maxHp)); }
 
     virtual void ApplyScaling(int roomCount);
     virtual void TakeDamage(int damage);
