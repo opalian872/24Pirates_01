@@ -59,7 +59,7 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
         break;
 
     case NormalType::Zombie:
-        engName = "Missing Virtual Zombnie";
+        engName = "Missing Virtual Zombie";
         maxHp = 60; atk = 30; def = 18; getExp = 60; getGold = 60;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });

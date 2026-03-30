@@ -57,8 +57,8 @@ public:
 	void PlayerTurnRun();
     void WaitForEnter();
     std::string RarityToString(CardRarity rarity) const;
-    std::vector<CardData> PackageCards();
-    //추후 플레이어 hand 도 package 하는 override 함수 구현 예정
+    std::vector<CardData> PackageDeck();
+    std::vector<CardData> PackageHand();
     void RenewUI();
 
     bool CheckForClear();

@@ -263,10 +263,45 @@ void BattleUI::RenderHand(const UIData& data)
     return;
 }
 
-void RenderDeck(const UIData& data)
+void BattleUI::RenderDeck(const UIData& data)
 {
+    std::cout << " Your Deck:" << '\n';
+    if (data.playerDeck.empty())
+    {
+        std::cout << "Deck is not connected." << std::endl;
+        std::cout << '\n';
+        return;
+    }
+    else
+    {
+        PrintCardGroupHorizontal(data.playerHand, 0, 4);
+    }
+    if (data.playerHand.size() > 5)
+    {
+        PrintCardGroupHorizontal(data.playerHand, 5, 9);
+    }
+    if (data.playerHand.size() > 10)
+    {
+        PrintCardGroupHorizontal(data.playerHand, 10, 14);
+    }
+    if (data.playerHand.size() > 15)
+    {
+        PrintCardGroupHorizontal(data.playerHand, 15, 19);
+    }
     return;
 }
+
+void BattleUI::RenderCommands(const UIData& data, BattleUIState battleUIState)
+{
+    switch (battleUIState)
+    {
+    case BattleUIState::Default:
+
+        break;
+    }
+    return;
+}
+
 void BattleUI::PrintCardGroupHorizontal(const std::vector<CardData>& cards, int startIndex, int endIndex)
 {
     std::vector<std::vector<std::string>> allCardLines;
