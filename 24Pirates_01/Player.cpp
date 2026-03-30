@@ -121,6 +121,29 @@ void Player::UseCard()
 
 }
 
+void Player::addAttack(int amount)
+{
+    attack = (std::max)(0, attack + amount);
+}
+
+void Player::addDefense(int amount)
+{
+    defense = (std::max)(0, defense + amount);
+}
+
+void Player::heal(int amount)
+{
+    hp += amount;
+    if (hp > maxHp)
+    {
+        hp = maxHp;
+    }
+
+    if (hp > 0)
+    {
+        playerCondition = true;
+    }
+}
 void Player::AddCardToDeck(Card* card)
 {
     playerDeck.addCard(card);

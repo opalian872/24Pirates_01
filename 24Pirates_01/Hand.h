@@ -31,4 +31,6 @@ public:
 
     // Clear hand at end of turn
     void Clear(Player& player);
+
+    void RemoveCard(int index, Player& player);
 };

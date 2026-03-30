@@ -104,6 +104,7 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
         RenderEnemies(data);
         RenderHand(data);
         RenderCommands(data, battleUIState);
+        RenderLogs(data);
         break;
     case BattleUIState::ChooseCard:
         ClearScreen();
@@ -112,6 +113,7 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
         RenderEnemies(data);
         RenderHand(data);
         RenderCommands(data, battleUIState);
+        RenderLogs(data);
         break;
     case BattleUIState::ChooseCardTarget:
         ClearScreen();
@@ -120,6 +122,7 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
         RenderEnemies(data);
         RenderHand(data);
         RenderCommands(data, battleUIState);
+        RenderLogs(data);
         break;
     case BattleUIState::CheckDeck:
         ClearScreen();
@@ -127,6 +130,15 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
         std::cout << '\n';
         RenderDeck(data);
         RenderCommands(data, battleUIState);
+        RenderLogs(data);
+        break;
+    case BattleUIState::EnemyTurn:
+        ClearScreen();
+        RenderHeader(data);
+        std::cout << '\n';
+        RenderEnemies(data);
+        RenderHand(data);
+        RenderLogs(data);
         break;
     }
     return;
@@ -203,7 +215,7 @@ void BattleUI::RenderHeader(const UIData& data)
     std::string right;
     int deckSize = data.playerDeck.size();
     left = " [" + data.playerName + "]"+ " Health: " + std::to_string(data.playerCurrentHealth)+" / " + std::to_string(data.playerMaxHealth)+ " Attack: "+std::to_string(data.playerAttack)+" Defense: "+ std::to_string(data.playerDefense);
-    right = "Buffs: [Attack+2(1turn)][Defense+3(2turn)]";
+    right = "Buffs: Work In Progress";
     int spaces = consoleWidth - static_cast<int>(left.size()) - static_cast<int>(right.size());
     std::cout << left << std::string(spaces, ' ') << right << std::endl;
     std::cout << " My Deck: "<<deckSize<<" / "<<deckSize << '\n';
@@ -273,19 +285,19 @@ void BattleUI::RenderDeck(const UIData& data)
     }
     else
     {
-        PrintCardGroupHorizontal(data.playerHand, 0, 4);
+        PrintCardGroupHorizontal(data.playerDeck, 0, 4);
     }
-    if (data.playerHand.size() > 5)
+    if (data.playerDeck.size() > 5)
     {
-        PrintCardGroupHorizontal(data.playerHand, 5, 9);
+        PrintCardGroupHorizontal(data.playerDeck, 5, 9);
     }
-    if (data.playerHand.size() > 10)
+    if (data.playerDeck.size() > 10)
     {
-        PrintCardGroupHorizontal(data.playerHand, 10, 14);
+        PrintCardGroupHorizontal(data.playerDeck, 10, 14);
     }
-    if (data.playerHand.size() > 15)
+    if (data.playerDeck.size() > 15)
     {
-        PrintCardGroupHorizontal(data.playerHand, 15, 19);
+        PrintCardGroupHorizontal(data.playerDeck, 15, 19);
     }
     return;
 }
@@ -372,6 +384,25 @@ void BattleUI::RenderCommands(const UIData& data, BattleUIState battleUIState)
     default:
         std::cout << " Choose:: ";
         break;
+    }
+}
+
+void BattleUI::RenderLogs(const UIData& data)
+{
+    std::cout << '\n';
+    std::cout << std::string(consoleWidth - 1, '-') << '\n';
+    std::cout << '\n';
+    std::cout << " Logs:" << '\n';
+
+    if (data.currentLog.empty())
+    {
+        std::cout << " No logs yet." << '\n';
+        return;
+    }
+
+    for (const std::string& log : data.currentLog)
+    {
+        std::cout << log << '\n';
     }
 }
 

@@ -4,6 +4,130 @@
 #include "Card.h"
 #include <random> //현재는 10번 방 클리어 or 실패 나타내기 위해 쓴 랜덤함수.
 #include <string>
+#include <limits>
+#include <sstream>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+
+namespace
+{
+    int ReadIntChoice()
+    {
+        while (true)
+        {
+            std::string line;
+            std::getline(std::cin, line);
+
+            std::stringstream ss(line);
+            int value;
+            char extra;
+
+            if ((ss >> value) && !(ss >> extra))
+            {
+                return value;
+            }
+
+            std::cout << " Invalid input. Choose again: ";
+        }
+    }
+
+    std::vector<int> BuildPlayableHandIndices(const Hand& hand)
+    {
+        std::vector<int> result;
+
+        for (int i = 0; i < hand.getCardCount(); i++)
+        {
+            Card* card = hand.getCard(i);
+
+            if (card != nullptr && card->IsPlayableInHand())
+            {
+                result.push_back(i);
+            }
+        }
+
+        return result;
+    }
+
+    void RemoveDeadEnemies(std::vector<std::unique_ptr<Enemy>>& enemies)
+    {
+        enemies.erase(
+            std::remove_if(
+                enemies.begin(),
+                enemies.end(),
+                [](const std::unique_ptr<Enemy>& enemy)
+                {
+                    return enemy == nullptr || enemy->IsDead();
+                }),
+            enemies.end());
+    }
+
+    void RunEnemyTurnDummy(Enemy& enemy, Player& player, std::vector<std::string>& currentLog)
+    {
+        EnemySkill skill = enemy.DetermineNextSkill();
+        currentLog.push_back(enemy.GetName() + " used " + skill.skillName + ".");
+
+        if (skill.skillName == "Attack Boost")
+        {
+            enemy.SetAtk(enemy.GetAtk() + skill.skillValue);
+            return;
+        }
+
+        if (skill.skillName == "Defense Boost")
+        {
+            enemy.SetDef(enemy.GetDef() + skill.skillValue);
+            return;
+        }
+
+        if (skill.skillName == "Heal")
+        {
+            enemy.SetCurrentHp(enemy.GetCurrentHp() + skill.skillValue);
+            return;
+        }
+
+        if (skill.skillName == "Multiple Attacks")
+        {
+            player.TakeDamage(
+                skill.skillValue,
+                enemy.GetName() + "'s attack could not break your defense.",
+                enemy.GetName() + " dealt damage: ",
+                "You were defeated.",
+                "Game Over."
+            );
+
+            if (player.GetPlayerCondition())
+            {
+                player.TakeDamage(
+                    skill.skillValue,
+                    enemy.GetName() + "'s second attack could not break your defense.",
+                    enemy.GetName() + " dealt damage: ",
+                    "You were defeated.",
+                    "Game Over."
+                );
+            }
+
+            enemy.EndTurn();
+            return;
+        }
+
+        int damage = skill.skillValue;
+
+        if (damage <= 0)
+        {
+            damage = enemy.GetAtk();
+        }
+
+        player.TakeDamage(
+            damage,
+            enemy.GetName() + "'s attack could not break your defense.",
+            enemy.GetName() + " dealt damage: ",
+            "You were defeated.",
+            "Game Over."
+        );
+
+        enemy.EndTurn();
+    }
+}
 
 
 BattleRoom::BattleRoom(int roomCount, Player& player, std::vector<std::unique_ptr<Enemy>> enemies): roomCount(roomCount), player(player), enemies(std::move(enemies)),
@@ -16,121 +140,201 @@ playerTurn(true), isRunning(true), battleUI(roomCount), battleUIState(BattleUISt
 int BattleRoom::Run() //지금 당장은 더미입니다.
 //0, 1, 2 int 리턴값으로 방 클리어, 게임 오버, 게임 전체 클리어 표시할 예정입니다
 {
+    isRunning = true;
+    playerTurn = true;
+    battleUIState = BattleUIState::Default;
+    currentLog.clear();
+    currentLog.push_back("Battle Start!");
+
     player.playerHand.DrawCards(player.playerDeck, 5, player);
-    RenewUI();
-    WaitForEnter();
-    /*int choice = 0;
+
     while (isRunning)
     {
-        battleUIState = BattleUIState::Default;
-        while (playerTurn)
+        if (!player.GetPlayerCondition())
         {
-            std::cin >> choice;
+            return 1;
+        }
 
-            if (std::cin.fail())
-            {
-                std::cin.clear();
-                std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
-                continue;
-            }
+        if (enemies.empty())
+        {
+            return (roomCount == 10) ? 2 : 0;
+        }
+
+        if (playerTurn)
+        {
+            battleUIState = BattleUIState::Default;
+            RenewUI();
+
+            int choice = ReadIntChoice();
+
             switch (choice)
             {
             case 1:
+            {
+                std::vector<int> playableIndices = BuildPlayableHandIndices(player.playerHand);
+
+                if (playableIndices.empty())
+                {
+                    currentLog.push_back("There are no playable cards in hand.");
+                    break;
+                }
+
                 battleUIState = BattleUIState::ChooseCard;
+                RenewUI();
 
+                int cardChoice = ReadIntChoice();
+
+                if (cardChoice == 0)
+                {
+                    battleUIState = BattleUIState::Default;
+                    break;
+                }
+
+                if (cardChoice < 1 || cardChoice > static_cast<int>(playableIndices.size()))
+                {
+                    currentLog.push_back("Invalid card choice.");
+                    battleUIState = BattleUIState::Default;
+                    break;
+                }
+
+                int realHandIndex = playableIndices[cardChoice - 1];
+                Card* selectedCard = player.playerHand.getCard(realHandIndex);
+
+                if (selectedCard == nullptr)
+                {
+                    currentLog.push_back("Selected card is invalid.");
+                    battleUIState = BattleUIState::Default;
+                    break;
+                }
+
+                int targetIndex = -1;
+
+                if (selectedCard->getTargetType() == TargetType::SingleEnemy)
+                {
+                    if (enemies.empty())
+                    {
+                        currentLog.push_back("There is no target.");
+                        battleUIState = BattleUIState::Default;
+                        break;
+                    }
+
+                    battleUIState = BattleUIState::ChooseCardTarget;
+                    RenewUI();
+
+                    int targetChoice = ReadIntChoice();
+
+                    if (targetChoice == 0)
+                    {
+                        battleUIState = BattleUIState::Default;
+                        break;
+                    }
+
+                    targetIndex = targetChoice - 1;
+
+                    if (targetIndex < 0 || targetIndex >= static_cast<int>(enemies.size()))
+                    {
+                        currentLog.push_back("Invalid target.");
+                        battleUIState = BattleUIState::Default;
+                        break;
+                    }
+
+                    if (enemies[targetIndex] == nullptr || enemies[targetIndex]->IsDead())
+                    {
+                        currentLog.push_back("That target is already defeated.");
+                        battleUIState = BattleUIState::Default;
+                        break;
+                    }
+                }
+
+                selectedCard->use(player, enemies, targetIndex);
+                currentLog.push_back("You used {" + selectedCard->getName() + "}.");
+
+                RemoveDeadEnemies(enemies);
+
+                player.playerHand.RemoveCard(realHandIndex, player);
+
+                battleUIState = BattleUIState::Default;
+                break;
             }
-                
-        }
-    }*/
 
-    /*while (player.currentHealth > 0 && enemies.size() > 0)
-    {
-        std::cin >> choice;
-        switch (choice)
+            case 2:
+            {
+                battleUI.ClearScreen();
+                std::cout << " [Deck List]\n\n";
+
+                if (player.playerDeck.getCardCount() == 0)
+                {
+                    std::cout << " Deck is empty.\n";
+                }
+                else
+                {
+                    for (int i = 0; i < player.playerDeck.getCardCount(); i++)
+                    {
+                        Card* card = player.playerDeck.getCard(i);
+
+                        if (card != nullptr)
+                        {
+                            std::cout << " [" << i + 1 << "] "
+                                << card->getName()
+                                << " | "
+                                << card->getEffectText()
+                                << '\n';
+                        }
+                    }
+                }
+
+                std::cout << '\n';
+                WaitForEnter();
+                break;
+            }
+
+            case 3:
+            {
+                std::cout << "Work In Progress" << std::endl;
+            }
+
+            case 0:
+                currentLog.push_back("You ended your turn.");
+                player.playerHand.Clear(player);
+                playerTurn = false;
+                break;
+
+            default:
+                currentLog.push_back("Invalid command.");
+                break;
+            }
+        }
+        else
         {
-        case 1:
-        case 2:
-        default:
-            break;
-        }
-        break;
-    }*/
+            battleUIState = BattleUIState::EnemyTurn;
+            RenewUI();
 
+            for (auto& enemy : enemies)
+            {
+                if (enemy == nullptr || enemy->IsDead())
+                {
+                    continue;
+                }
+
+                RunEnemyTurnDummy(*enemy, player, currentLog);
+
+                RenewUI();
+                WaitForEnter();
+
+                if (!player.GetPlayerCondition())
+                {
+                    return 1;
+                }
+            }
+
+            player.playerHand.DrawCards(player.playerDeck, 5, player);
+            playerTurn = true;
+            currentLog.clear();
+            battleUIState = BattleUIState::Default;
+        }
+    }
 
     return 0;
-
-    //if (roomCount != 10)
-    //{
-    //    battleUI.Render();
-
-    //    if (playerDeck != nullptr)
-    //    {
-    //        std::cout << "\n=== My Cards ===\n";
-
-    //        if (playerDeck->getCardCount() == 0)
-    //        {
-    //            std::cout << "Deck is empty.\n";
-    //        }
-    //        else
-    //        {
-    //            for (int i = 0; i < playerDeck->getCardCount(); i++)
-    //            {
-    //                Card* card = playerDeck->getCard(i);
-
-    //                if (card != nullptr)
-    //                {
-    //                    std::cout << "[" << i + 1 << "] "
-    //                        << card->getName()
-    //                        << " | "
-    //                        << card->getEffectText()
-    //                        << "\n";
-    //                }
-    //            }
-    //        }
-    //    }
-    //    else
-    //    {
-    //        std::cout << "\nDeck is not connected.\n";
-    //    }
-
-    //    WaitForEnter();
-    //    return 0;
-    //}
-    //else
-    //{
-    //    std::random_device rd;//1 or 2 랜덤하게
-    //    int randomClear = (rd() % 2);
-    //    if (randomClear == 0)
-    //    {
-    //        battleUI.Render();
-    //        std::cout << "Current Room: " << roomCount << " Battle has ended. You Lost!" << std::endl;
-    //        WaitForEnter();
-    //        return 1;
-    //    }
-    //    else
-    //    {
-    //        battleUI.Render();
-    //        std::cout << "Current Room: " << roomCount << " Battle has ended. You Cleared!" << std::endl;
-    //        WaitForEnter();
-    //        return 2;
-    //    }
-    //}
-
-
-
-
-    //while (isRunning)
-	//{
-		//if (playerTurn)
-		//{
-			//플레이어가 선택하는 행동들이 여기서 동작합니다. 행동마다 전투가 종료되었는지 체크합니다.
-		//}
-		//else
-		//{
-			//적이 선택하는 동작들이 여기서 동작합니다.
-		//}
-	//}
-	//return;
 }
 
 void BattleRoom::Reward()
@@ -234,9 +438,3 @@ void BattleRoom::RenewUI()
     return;
 }
 
-bool BattleRoom::CheckForClear()
-{
-    if (player.GetPlayerCondition());
-
-    return true;
-}

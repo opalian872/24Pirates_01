@@ -93,3 +93,21 @@ void Hand::Clear(Player& player)
 
     cards.clear();
 }
+
+void Hand::RemoveCard(int index, Player& player)
+{
+    if (index < 0 || index >= static_cast<int>(cards.size()))
+    {
+        return;
+    }
+
+    Card* card = cards[index];
+
+    if (card != nullptr && card->IsPassive())
+    {
+        card->RemovePassive(player);
+    }
+
+    delete card;
+    cards.erase(cards.begin() + index);
+}

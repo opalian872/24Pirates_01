@@ -48,8 +48,8 @@ public:
     int GetDef() const { return def; }
     int GetExp() const { return getExp; }
     int GetGold() const { return getGold; }
-    void takeDamage(int damage) {}
-    bool isDead() const { return false; }
+    void takeDamage(int damage) { TakeDamage(damage); }
+    bool isDead() const { return IsDead(); }
     void SetAtk(int newAtk) { atk = (std::max)(0, newAtk); }
     void SetDef(int newDef) { def = (std::max)(0, newDef); }
     void SetCurrentHp(int newHp) { currentHp = (std::max)(0, (std::min)(newHp, maxHp)); }
