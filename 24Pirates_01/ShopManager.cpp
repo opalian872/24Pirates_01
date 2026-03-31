@@ -114,7 +114,7 @@ bool ShopManager::RemoveRandomCard()
     return true;
 }
 
-// 차단되지 않은 카드만 다시 뽑아 상점을 새로고침
+// 상점을 새로고침
 void ShopManager::ResetShop()
 {
     if (hasUsedReset)
@@ -129,7 +129,7 @@ void ShopManager::ResetShop()
         shopCards[i] = ShopCardData();
     }
 
-    std::vector<ShopCardData> candidates;
+    std::vector<ShopCardData> availableCards;
 
     for (int i = 0; i < cardDatabase.getCardCount(); i++)
     {
@@ -140,19 +140,19 @@ void ShopManager::ResetShop()
             continue;
         }
 
-        candidates.push_back(ConvertCardToShopData(card));
+        availableCards.push_back(ConvertCardToShopData(card));
     }
 
-    if (candidates.empty())
+    if (availableCards.empty())
     {
         return;
     }
 
     std::random_device rd;
     std::mt19937 g(rd());
-    std::shuffle(candidates.begin(), candidates.end(), g);
+    std::shuffle(availableCards.begin(), availableCards.end(), g);
 
-    int count = static_cast<int>(candidates.size());
+    int count = static_cast<int>(availableCards.size());
     if (count > 10)
     {
         count = 10;
@@ -160,7 +160,7 @@ void ShopManager::ResetShop()
 
     for (int i = 0; i < count; i++)
     {
-        shopCards[i] = candidates[i];
+        shopCards[i] = availableCards[i];
     }
 }
 
