@@ -36,20 +36,11 @@ private:
     // 현재 상점에 진열 중인 10칸 슬롯
     std::vector<ShopCardData> shopCards;
 
-    // 다시 상점에 나오면 안 되는 카드 ID 목록
-    std::vector<CardID> blockedCardIDs;
-
     // 상점 리셋 사용 여부
     bool hasUsedReset;
 
     // 덱 카드 제거 사용 횟수
     int removeCardCount;
-
-    // 해당 카드 ID가 이미 상점 차단 목록에 있는지 확인
-    bool IsBlocked(CardID id) const;
-
-    // 카드 ID를 차단 목록에 추가해서 다시 상점에 나오지 못하게 함
-    void AddBlockedCard(CardID id);
 
     // 카드 희귀도 enum 값을 문자열로 변환
     std::string RarityToString(CardRarity rarity) const;

@@ -28,60 +28,7 @@ void ShopManager::InitializeShop()
     hasUsedReset = false;
 }
 
-// 차단되지 않은 카드만 다시 뽑아 상점을 새로고침
-void ShopManager::ResetShop()
-{
-    if (hasUsedReset)
-    {
-        return;
-    }
 
-    hasUsedReset = true;
-
-    for (int i = 0; i < 10; i++)
-    {
-        shopCards[i] = ShopCardData();
-    }
-
-    std::vector<ShopCardData> candidates;
-
-    for (int i = 0; i < cardDatabase.getCardCount(); i++)
-    {
-        Card* card = cardDatabase.getCardByIndex(i);
-
-        if (card == nullptr)
-        {
-            continue;
-        }
-
-        if (IsBlocked(card->getID()))
-        {
-            continue;
-        }
-
-        candidates.push_back(ConvertCardToShopData(card));
-    }
-
-    if (candidates.empty())
-    {
-        return;
-    }
-
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(candidates.begin(), candidates.end(), g);
-
-    int count = static_cast<int>(candidates.size());
-    if (count > 10)
-    {
-        count = 10;
-    }
-
-    for (int i = 0; i < count; i++)
-    {
-        shopCards[i] = candidates[i];
-    }
-}
 
 // 선택한 상점 카드를 구매해서 덱에 넣고 골드를 차감하며, 다시 상점에 못 나오게 처리
 bool ShopManager::BuyCard(int index)
@@ -104,9 +51,7 @@ bool ShopManager::BuyCard(int index)
     }
 
     playerDeck.addCardByID(cardDatabase, shopCards[index].id);
-    AddBlockedCard(shopCards[index].id);
 
-    // 슬롯은 비우되 칸 자체는 유지
     shopCards[index] = ShopCardData();
 
     return true;
@@ -127,7 +72,6 @@ bool ShopManager::RemoveCard(int deckIndex)
         return false;
     }
 
-    AddBlockedCard(card->getID());
     playerDeck.removeCard(deckIndex);
     removeCardCount++;
 
@@ -159,7 +103,6 @@ bool ShopManager::RemoveRandomCard()
         return false;
     }
 
-    AddBlockedCard(card->getID());
     playerDeck.removeCard(randomIndex);
 
     // 0~60 골드 지급
@@ -169,6 +112,56 @@ bool ShopManager::RemoveRandomCard()
     player.GainGold(lastRandomRemoveGold, "Random remove reward ");
 
     return true;
+}
+
+// 차단되지 않은 카드만 다시 뽑아 상점을 새로고침
+void ShopManager::ResetShop()
+{
+    if (hasUsedReset)
+    {
+        return;
+    }
+
+    hasUsedReset = true;
+
+    for (int i = 0; i < 10; i++)
+    {
+        shopCards[i] = ShopCardData();
+    }
+
+    std::vector<ShopCardData> candidates;
+
+    for (int i = 0; i < cardDatabase.getCardCount(); i++)
+    {
+        Card* card = cardDatabase.getCardByIndex(i);
+
+        if (card == nullptr)
+        {
+            continue;
+        }
+
+        candidates.push_back(ConvertCardToShopData(card));
+    }
+
+    if (candidates.empty())
+    {
+        return;
+    }
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(candidates.begin(), candidates.end(), g);
+
+    int count = static_cast<int>(candidates.size());
+    if (count > 10)
+    {
+        count = 10;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        shopCards[i] = candidates[i];
+    }
 }
 
 int ShopManager::GetLastRandomRemoveGold() const
@@ -216,31 +209,6 @@ bool ShopManager::CanRemoveCard() const
 int ShopManager::GetRemoveCardCount() const
 {
     return removeCardCount;
-}
-
-// 카드가 차단 목록에 있는지 확인
-bool ShopManager::IsBlocked(CardID id) const
-{
-    for (CardID blockedID : blockedCardIDs)
-    {
-        if (blockedID == id)
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-// 카드 ID를 차단 목록에 추가해서 이후 상점 후보에서 제외
-void ShopManager::AddBlockedCard(CardID id)
-{
-    if (IsBlocked(id))
-    {
-        return;
-    }
-
-    blockedCardIDs.push_back(id);
 }
 
 // 희귀도 enum 값을 문자열로 바꿔서 출력용으로 사용
