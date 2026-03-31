@@ -62,16 +62,40 @@ void GameManager::GenerateRoom()
 		{
 			currentState = GameState::InBattle;
             enemies.clear();
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<int> normalDist(0, 8);
-
-            for (int i = 0; i < 3; i++)
+            switch (roomCount)
             {
-                NormalType type = static_cast<NormalType>(normalDist(gen));
-                enemies.push_back(std::make_unique<NormalEnemy>(type, roomCount));
+                std::random_device rd;
+                std::mt19937 gen(rd());
+            case 1:
+            case 2:
+                std::uniform_int_distribution<int> uniformDist(0, 3);
+                for (int i = 0; i < 3; i++)
+                {
+                    NormalType type = static_cast<NormalType>(uniformDist(gen));
+                    enemies.push_back(std::make_unique<NormalEnemy>(type, roomCount));
+                }
+                break;
+            case 4:
+            case 5:
+                std::uniform_int_distribution<int> uniformDist(2, 5);
+                for (int i = 0; i < 3; i++)
+                {
+                    NormalType type = static_cast<NormalType>(uniformDist(gen));
+                    enemies.push_back(std::make_unique<NormalEnemy>(type, roomCount));
+                }
+                break;
+            case 7:
+            case 8:
+                std::uniform_int_distribution<int> uniformDist(5, 8);
+                for (int i = 0; i < 3; i++)
+                {
+                    NormalType type = static_cast<NormalType>(uniformDist(gen));
+                    enemies.push_back(std::make_unique<NormalEnemy>(type, roomCount));
+                }
+                break;        
             }
-		}
+       
+        }
 		else
 		{
 			currentState = GameState::InShop;
