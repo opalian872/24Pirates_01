@@ -152,7 +152,7 @@ void Card::ApplyPassive(Player& player) const
         break;
 
     case CardID::CtrlSObsessive:
-        player.addDefense(5);
+        player.addDefense(1);
         break;
 
     case CardID::TruthRoom:
@@ -246,11 +246,11 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
         break;
 
     case CardID::SuddenBathroom:
-        player.addDefense(20);
+        player.addDefense(7);
         break;
 
     case CardID::MonitorOff:
-        player.addDefense(10);
+        player.addDefense(3);
         break;
 
     case CardID::ChairPush:
@@ -280,7 +280,7 @@ void Card::use(Player& player, std::vector<std::unique_ptr<Enemy>>& enemies, int
             break;
 
         case 4:
-            player.addDefense(15);
+            player.addDefense(6);
             break;
 
         case 5:

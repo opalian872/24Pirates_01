@@ -22,7 +22,7 @@ void CardDatabase::initialize()
         CardRarity::Normal,
         "Keyboard Smash",
         "You kick the keyboard instead of typing with your hands.",
-        "Deal 30 damage to one enemy.",
+        "Deal damage equal to 100% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -32,7 +32,7 @@ void CardDatabase::initialize()
         CardRarity::Normal,
         "Double-Click Bug",
         "The mouse glitches and clicks twice at the perfect moment.",
-        "Deal 18 damage twice to one enemy.",
+        "Deal damage equal to 60% of your attack twice to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -42,7 +42,7 @@ void CardDatabase::initialize()
         CardRarity::Normal,
         "Sudden Bathroom Trip",
         "You urgently run away and somehow become harder to hit.",
-        "Gain 20 defense.",
+        "Gain 7 defense.",
         CardType::Active,
         TargetType::Self
     ));
@@ -52,7 +52,7 @@ void CardDatabase::initialize()
         CardRarity::Normal,
         "Monitor Turned Off",
         "The screen goes dark, but you brace yourself and stay calm.",
-        "Gain 10 defense.",
+        "Gain 3 defense.",
         CardType::Active,
         TargetType::Self
     ));
@@ -62,7 +62,7 @@ void CardDatabase::initialize()
         CardRarity::Normal,
         "Chair Push",
         "You shove the chair forward to hit the enemy.",
-        "Deal 20 damage to one enemy.",
+        "Deal damage equal to 80% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -92,7 +92,7 @@ void CardDatabase::initialize()
         CardRarity::Rare,
         "Hit the Computer",
         "It is not scientific, but sometimes violence fixes everything.",
-        "Deal 50 damage to one enemy.",
+        "Deal damage equal to 150% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -112,7 +112,7 @@ void CardDatabase::initialize()
         CardRarity::Rare,
         "Meme Attack",
         "A cursed meme is shown to the enemy's face.",
-        "Deal 25 damage to one enemy.",
+        "Deal damage equal to 90% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -132,7 +132,7 @@ void CardDatabase::initialize()
         CardRarity::Rare,
         "Ctrl + S Obsession",
         "You save every three seconds and feel strangely safer.",
-        "While held, gain 5 defense.",
+        "While held, gain defense.",
         CardType::Passive,
         TargetType::Self
     ));
@@ -152,7 +152,7 @@ void CardDatabase::initialize()
         CardRarity::Epic,
         "Laptop Fan Turbo Mode",
         "The fan screams like an airplane and damages all enemies.",
-        "Deal 12 damage to all enemies.",
+        "Deal damage equal to 40% of your attack to all enemies.",
         CardType::Active,
         TargetType::AllEnemies
     ));
@@ -182,7 +182,7 @@ void CardDatabase::initialize()
         CardRarity::Epic,
         "Delete the Entire Code",
         "The whole project vanishes in one fatal mistake.",
-        "Deal 60 damage to one enemy.",
+        "Deal damage equal to 200% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -212,7 +212,7 @@ void CardDatabase::initialize()
         CardRarity::Normal,
         "Shake the Wi-Fi",
         "You desperately try to make the signal come back.",
-        "Deal 12 damage to one enemy.",
+        "Deal damage equal to 50% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -222,7 +222,7 @@ void CardDatabase::initialize()
         CardRarity::Rare,
         "Debug Hell",
         "You return alive from debugging hell and strike back.",
-        "Deal 35 damage to one enemy.",
+        "Deal damage equal to 120% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -262,7 +262,7 @@ void CardDatabase::initialize()
         CardRarity::Rare,
         "Server Explosion",
         "Someone pushed broken code. Everything explodes.",
-        "Deal 30 damage to all enemies.",
+        "Deal damage equal to 80% of your attack to all enemies.",
         CardType::Active,
         TargetType::AllEnemies
     ));
@@ -272,7 +272,7 @@ void CardDatabase::initialize()
         CardRarity::Rare,
         "Keyboard Mash",
         "You lose patience and smash every key at once.",
-        "Deal 10 damage three times to one enemy.",
+        "Deal damage equal to 35% of your attack three times to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -282,7 +282,7 @@ void CardDatabase::initialize()
         CardRarity::Rare,
         "Code Rampage",
         "Hardcoded chaos erupts and crushes the target.",
-        "Deal 60 damage to one enemy.",
+        "Deal damage equal to 200% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
@@ -302,7 +302,7 @@ void CardDatabase::initialize()
         CardRarity::Epic,
         "Curse of Assignments",
         "An unbearable amount of homework curses the whole field.",
-        "Deal 35 damage to all enemies.",
+        "Deal damage equal to 100% of your attack to all enemies.",
         CardType::Active,
         TargetType::AllEnemies
     ));
@@ -342,7 +342,7 @@ void CardDatabase::initialize()
         CardRarity::Epic,
         "CPU Full Power",
         "The processor overheats as every calculation is forced through at once.",
-        "Deal 70 damage to one enemy.",
+        "Deal damage equal to 230% of your attack to one enemy.",
         CardType::Active,
         TargetType::SingleEnemy
     ));
