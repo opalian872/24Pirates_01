@@ -290,7 +290,6 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
 
             case 0:
                 currentLog.push_back("You ended your turn.");
-                player.playerHand.Clear(player);
                 playerTurn = false;
                 break;
 
@@ -321,7 +320,7 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
                     return 1;
                 }
             }
-
+            player.playerHand.Clear(player);
             player.playerHand.DrawCards(player.playerDeck, 5, player);
             playerTurn = true;
             currentLog.clear();
