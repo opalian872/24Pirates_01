@@ -50,7 +50,7 @@ public:
     int GetExp();
     int GetGold();
     bool GetPlayerCondition();
-
+    int GetLevel() const { return level; }
     Deck playerDeck;
     Hand playerHand;
 };

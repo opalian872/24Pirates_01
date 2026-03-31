@@ -16,6 +16,7 @@ enum class BattleUIState
     ChooseCardTarget,
     CheckDeck,
     EnemyTurn,
+    Clear
 };
 
 struct CardData
@@ -51,6 +52,9 @@ struct EnemyData
 struct UIData
 {
     std::string playerName;
+    int playerLevel;
+    int playerExp;
+    int playerGold;
     int playerCurrentHealth;
     int playerMaxHealth;
     int playerAttack;

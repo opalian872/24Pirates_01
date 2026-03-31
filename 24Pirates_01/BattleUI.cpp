@@ -140,6 +140,13 @@ void BattleUI::Render(const UIData& data, BattleUIState battleUIState)
         RenderHand(data);
         RenderLogs(data);
         break;
+    case BattleUIState::Clear:
+        ClearScreen();
+        RenderHeader(data);
+        std::cout << '\n';
+        RenderClear();
+        RenderLogs(data);
+        break;
     }
     return;
 }
@@ -214,11 +221,12 @@ void BattleUI::RenderHeader(const UIData& data)
     std::string left;
     std::string right;
     int deckSize = data.playerDeck.size();
-    left = " [" + data.playerName + "]"+ " Health: " + std::to_string(data.playerCurrentHealth)+" / " + std::to_string(data.playerMaxHealth)+ " Attack: "+std::to_string(data.playerAttack)+" Defense: "+ std::to_string(data.playerDefense);
+    left = " [" + data.playerName + "]"+ " Lv. "+std::to_string(data.playerLevel)+ " Health: " + std::to_string(data.playerCurrentHealth)+" / " + std::to_string(data.playerMaxHealth)+ " Attack : "+std::to_string(data.playerAttack)+" Defense : "+ std::to_string(data.playerDefense);
     right = "Buffs: Work In Progress";
     int spaces = consoleWidth - static_cast<int>(left.size()) - static_cast<int>(right.size());
     std::cout << left << std::string(spaces, ' ') << right << std::endl;
-    std::cout << " My Deck: "<<deckSize<<" / "<<deckSize << '\n';
+    std::cout << " My Deck: "<<deckSize<<" / "<<deckSize << " My exp: " << data.playerExp
+        << " My Gold: " << data.playerGold<<'\n';
     return;
 }
 void BattleUI::RenderEnemies(const UIData& data)
@@ -257,7 +265,7 @@ void BattleUI::RenderHand(const UIData& data)
     std::cout << " Your Hand:" << '\n';
     if (data.playerHand.empty())
     {
-        std::cout << "Deck is not connected." << std::endl;
+        std::cout << "Your Hand is Empty!" << std::endl;
         std::cout << '\n';
         return;
     }
@@ -405,6 +413,37 @@ void BattleUI::RenderLogs(const UIData& data)
         std::cout << log << '\n';
     }
 }
+
+void BattleUI::RenderClear()
+{
+    std::vector<std::string> clear =
+    {
+        "  CCCCC     LL        EEEEEEE      AAAAA      RRRRRR         !!!   ",
+        " CC   CC    LL        EE          AA   AA     RR   RR       !!!!!  ",
+        "CC          LL        EE         AA     AA    RR   RR       !!!!!  ",
+        "CC          LL        EEEEE      AAAAAAAAA    RRRRRR         !!!   ",
+        "CC          LL        EE         AA     AA    RR  RR         !!!   ",
+        " CC   CC    LL        EE         AA     AA    RR   RR              ",
+        "  CCCCC     LLLLLLL   EEEEEEE    AA     AA    RR    RR       !!!   ",
+        "                                                            !!!!!  "
+    };
+
+    std::cout << "\n\n";
+
+    for (const std::string& line : clear)
+    {
+        int padding = (consoleWidth - static_cast<int>(line.size())) / 2;
+        if (padding < 0)
+        {
+            padding = 0;
+        }
+
+        std::cout << std::string(padding, ' ') << line << '\n';
+    }
+
+    std::cout << "\n";
+}
+
 
 void BattleUI::PrintCardGroupHorizontal(const std::vector<CardData>& cards, int startIndex, int endIndex)
 {

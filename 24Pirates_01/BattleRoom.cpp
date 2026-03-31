@@ -140,6 +140,15 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
 {
     isRunning = true;
     playerTurn = true;
+    //방 끝났을 때 플레이어 리셋/보상 지급용 변수들
+    originalAttack = player.GetAttack();
+    originalDefense = player.GetDefense();
+    for (const auto& enemy : enemies)
+    {
+        totalExp += enemy->GetExp();
+        totalGold += enemy->GetGold();
+    }
+
     battleUIState = BattleUIState::Default;
     currentLog.clear();
     currentLog.push_back("Battle Start!");
@@ -155,7 +164,8 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
 
         if (enemies.empty())
         {
-            return (roomCount == 10) ? 2 : 0;
+            isRunning = false;
+            continue;
         }
 
         if (playerTurn)
@@ -258,13 +268,18 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
             case 2:
             {
                 battleUIState = BattleUIState::CheckDeck;
-                RenewUI();
-                int previousChoice = ReadIntChoice();
-                if (previousChoice == 0)
+                while (true)
                 {
-                    battleUIState = BattleUIState::Default;
-                    break;
+                    RenewUI();
+                    int previousChoice = ReadIntChoice();
+
+                    if (previousChoice == 0)
+                    {
+                        battleUIState = BattleUIState::Default;
+                        break;
+                    }
                 }
+                break;
             }
 
             case 3:
@@ -313,31 +328,27 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
             battleUIState = BattleUIState::Default;
         }
     }
-
-    return 0;
+    battleUIState = BattleUIState::Clear;
+    RewardReset();
+    RenewUI();
+    std::cin.ignore(10000, '\n');
+    WaitForEnter();
+    return (roomCount==10)?2:0;
 }
 
 
-
-void BattleRoom::PlayerTurnRun() 
+void BattleRoom::RewardReset()
 {
-	bool playerTurnIsRunning = true;
-	int choice = -1;
-	//ui.render() 이 메서드로 화면 UI를 만들 겁니다.
-	//std::cin >>choice;
-	while (playerTurnIsRunning)
-	{
-		switch (choice)
-		{
-		case 1: 
-		case 2:
-		case 3:
-		default:
-			break;
-		}
-	}
-
+    player.addAttack(originalAttack - player.GetAttack());
+    player.addDefense(originalDefense - player.GetDefense());
+    player.GainExp(totalExp, "The player' experienced increased by: ");
+    player.GainGold(totalGold, "The player got richer! Gained: ");
+    currentLog.clear();
+    currentLog.push_back(player.GetName() + " gained " + std::to_string(totalExp) + " experience!");
+    currentLog.push_back(player.GetName() + " gained " + std::to_string(totalGold) + " gold!");
+    return;
 }
+
 
 void BattleRoom::WaitForEnter()
 {
@@ -389,6 +400,9 @@ void BattleRoom::RenewUI()
         enemiesData.push_back({ enemy->GetName(), enemy->GetMaxHp(), enemy->GetCurrentHp(), enemy->GetAtk(), enemy->GetDef(), enemy->GetExp(), enemy->GetGold()});
     }
     data.playerName = player.GetName();
+    data.playerLevel=player.GetLevel();
+    data.playerExp = player.GetExp();
+    data.playerGold = player.GetGold();
     data.playerCurrentHealth = player.GetHp();
     data.playerMaxHealth = player.GetMaxHp();;
     data.playerAttack = player.GetAttack();

@@ -23,6 +23,7 @@ public:
     void RenderDeck(const UIData& data);
     void RenderCommands(const UIData& data, BattleUIState battleUIState);
     void RenderLogs(const UIData& data);
+    void RenderClear();
     void PrintCardGroupHorizontal(const std::vector<CardData>& cards, int startIndex, int endIndex);
 };
 
