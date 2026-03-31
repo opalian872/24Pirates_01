@@ -40,7 +40,7 @@ void Player::GainExp(int expAmount, std::string gainEMsg)
 {
     std::cout << gainEMsg << expAmount << std::endl;
     exp += expAmount;
-    if (exp >= 100)
+    if (exp >= 100 && level < 10)
     {
         LevelUp("The Player levels up!");
     }
@@ -49,13 +49,15 @@ void Player::GainExp(int expAmount, std::string gainEMsg)
 
 void Player::LevelUp(std::string levelMsg)
 {
-    std::cout << levelMsg << std::endl;
-    ++level;
-    maxHp += level * 20;
-    hp = maxHp;
-    attack += level * 5;
-    exp = 0;
-
+    while(exp >= 100 && level < 10)
+    {
+        std::cout << levelMsg << std::endl;
+        ++level;
+        maxHp += level * 10;
+        hp = maxHp;
+        attack += level * 3;
+        exp -= 100;
+    }
 }
 
 void Player::GainGold(int goldAmount, std::string gainGMsg)
