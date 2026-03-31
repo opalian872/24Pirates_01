@@ -261,7 +261,6 @@ void ShopRoom::ShowMenu()
         std::cout << "Current Gold: " << shopManager.getGold() << "\n";
         std::cout << "My Deck: " << shopManager.GetDeckCardCount() << "/20\n\n";
         std::cout << "[Normal: 20 gold]  [Rare: 30 gold]  [Epic: 50 gold]" << "\n";
-        std::cout << "Remove Count: " << shopManager.GetRemoveCardCount() << "/3\n\n\n";
 
         PrintShopCards(shopManager.GetShopCards());
         PrintDeckCards();
@@ -269,10 +268,11 @@ void ShopRoom::ShowMenu()
         std::cout << "\n============================================================\n";
         std::cout << "Commands:\n";
         std::cout << "[1]: Buy Card\n";
-        std::cout << "[2]: Remove Card From Deck\n";
+        std::cout << "[2]: Remove Card From Deck " << shopManager.GetRemoveCardCount() << "/3\n";
         std::cout << "[3]: Random Remove From Deck\n";
         std::cout << "[4]: Shop Reset (1 time only)\n";
-        std::cout << "[5]: Exit Shop\n";
+        std::cout << "[5]: Check My Cards\n";
+        std::cout << "[6]: Exit Shop\n";
         std::cout << "\nChoose:: ";
 
         std::cin >> choice;
@@ -299,9 +299,14 @@ void ShopRoom::ShowMenu()
             ResetShop();
             break;
         case 5:
+            CheckMyCards();
+            break;
+        case 6:
             ExitShop();
             isShopping = false;
             break;
+        
+
         default:
             break;
         }
@@ -385,6 +390,7 @@ void ShopRoom::RemoveRandomCard()
     if (shopManager.RemoveRandomCard())
     {
         std::cout << "\nA random card has been removed from your deck.\n";
+        std::cout << "You gained " << shopManager.GetLastRandomRemoveGold() << " gold.\n";
     }
     else
     {
@@ -412,6 +418,39 @@ void ShopRoom::ResetShop()
     std::cout << "Press Enter to return to shop.";
     std::cin.get();
 }
+
+void ShopRoom::CheckMyCards()
+{
+    ClearScreen();
+    std::cout << " [Deck List]\n\n";
+
+    if (shopManager.GetDeckCardCount() == 0)
+    {
+        std::cout << " Deck is empty.\n";
+    }
+    else
+    {
+        for (int i = 0; i < shopManager.GetDeckCardCount(); i++)
+        {
+            Card* card = shopManager.GetDeckCard(i);
+
+            if (card != nullptr)
+            {
+                std::cout << " [" << i + 1 << "] "
+                    << card->getName()
+                    << " | "
+                    << card->getEffectText()
+                    << '\n';
+            }
+        }
+    }
+
+    std::cout << "\nPress Enter to return to shop.";
+    std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+    std::cin.get();
+}
+
+
 
 // 상점 종료 메시지를 출력
 void ShopRoom::ExitShop()
