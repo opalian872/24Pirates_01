@@ -117,9 +117,7 @@ namespace
             damage = enemy.GetAtk();
         }
 
-        player.TakeDamage(
-            damage,
-            enemy.GetName() + "'s attack could not break your defense.",
+        player.TakeDamage(damage, enemy.GetName() + "'s attack could not break your defense.",
             enemy.GetName() + " dealt damage: ",
             "You were defeated.",
             "Game Over."
@@ -259,38 +257,20 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
 
             case 2:
             {
-                battleUI.ClearScreen();
-                std::cout << " [Deck List]\n\n";
-
-                if (player.playerDeck.getCardCount() == 0)
+                battleUIState = BattleUIState::CheckDeck;
+                RenewUI();
+                int previousChoice = ReadIntChoice();
+                if (previousChoice == 0)
                 {
-                    std::cout << " Deck is empty.\n";
+                    battleUIState = BattleUIState::Default;
+                    break;
                 }
-                else
-                {
-                    for (int i = 0; i < player.playerDeck.getCardCount(); i++)
-                    {
-                        Card* card = player.playerDeck.getCard(i);
-
-                        if (card != nullptr)
-                        {
-                            std::cout << " [" << i + 1 << "] "
-                                << card->getName()
-                                << " | "
-                                << card->getEffectText()
-                                << '\n';
-                        }
-                    }
-                }
-
-                std::cout << '\n';
-                WaitForEnter();
-                break;
             }
 
             case 3:
             {
                 std::cout << "Work In Progress" << std::endl;
+                break;
             }
 
             case 0:
@@ -337,24 +317,7 @@ int BattleRoom::Run() //지금 당장은 더미입니다.
     return 0;
 }
 
-void BattleRoom::Reward()
-{
-	int totalExp = 0;
-	int totalGold = 0;
-	//for(const auto& enemy: enemies)
-	//{
-	//   totalExp +=enemy->killExp;
-	//   totalGold +=enemy->killGold;
-	//}
-	for (const auto& enemy : enemies)
-	{
-		//totalExp += enemy; <<<enemy에 get, set 함수 필요
-		//totalGold += enemy.killGold;
-	}
-	//player->giveExp(); 이런 걸로 레벨업 체크 해줬으면 좋겠네요. 어떻게 UI화면에 병합할지는 나중에 생각해 보는걸로
-	//player->addGold();
-	return;
-}
+
 
 void BattleRoom::PlayerTurnRun() 
 {
