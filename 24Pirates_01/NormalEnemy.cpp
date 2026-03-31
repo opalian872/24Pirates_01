@@ -12,7 +12,7 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
     {
     case NormalType::Skeleton:
         engName = "The Memory Leaked Skeleton";
-        maxHp = 10; atk = 5; def = 3; getExp = 10; getGold = 10;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Heavy Strike", SkillType::Normal, static_cast<int>(atk * 1.5f) });
         skills.push_back({ "Memory Trace", SkillType::Unique, 0 });
@@ -20,20 +20,16 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
 
     case NormalType::Goblin:
         engName = "Semicolon Thief Goblin";
-        maxHp = 20; atk = 10; def = 6; getExp = 20; getGold = 20;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
-        // Skill 2: 연속 공격 (공격력의 50%를 밸류로 저장)
-        // 실제 '2번 공격' 로직은 나중에 BattleRoom에서 이 스킬 이름이나 ID를 체크하여 처리합니다.
         skills.push_back({ "Multiple Attacks", SkillType::Normal, static_cast<int>(atk * 0.5f) });
-        // Skill 3: [고유] 세미콜론 훔치기 (피해 무효화 기믹)
-        // 데미지 자체가 목적이 아니므로 밸류는 0으로 둡니다.
         skills.push_back({ "Thief Semicolon", SkillType::Unique, 0 });
         break;
 
     case NormalType::Snail:
         engName = "The Infinite Loop Snail";
-        maxHp = 30; atk = 15; def = 9; getExp = 30; getGold = 30;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
 
         skills.push_back({ "Attack Boost", SkillType::Normal, 3 });
         skills.push_back({ "Defense Boost", SkillType::Normal, 3 });
@@ -42,7 +38,7 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
 
     case NormalType::Orc:
         engName = "The Null Pointer Orc";
-        maxHp = 40; atk = 20; def = 12; getExp = 40; getGold = 40;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Heavy Strike", SkillType::Normal, static_cast<int>(atk * 1.5f) });
@@ -51,7 +47,7 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
 
     case NormalType::Hog:
         engName = "Permission Denied Hog";
-        maxHp = 50; atk = 25; def = 15; getExp = 50; getGold = 50;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Multiple Attacks", SkillType::Normal, static_cast<int>(atk * 0.5f) });
@@ -60,7 +56,7 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
 
     case NormalType::Zombie:
         engName = "Missing Virtual Zombie";
-        maxHp = 60; atk = 30; def = 18; getExp = 60; getGold = 60;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Life Drain", SkillType::Normal, static_cast<int>(atk * 0.5f) });
@@ -69,7 +65,7 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
 
     case NormalType::Golem:
         engName = "Inline Failed Golem";
-        maxHp = 70; atk = 35; def = 21; getExp = 70; getGold = 70;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Critical Hit", SkillType::Normal, atk });
@@ -78,7 +74,7 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
 
     case NormalType::Slime:
         engName = "One-Liner Slime";
-        maxHp = 80; atk = 40; def = 24; getExp = 80; getGold = 80;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Heal", SkillType::Normal, static_cast<int>(maxHp * 0.1f) });
@@ -87,7 +83,7 @@ NormalEnemy::NormalEnemy(NormalType type, int roomCount)
 
     case NormalType::Chimera:
         engName = "Zero-Indent Chimera";
-        maxHp = 90; atk = 45; def = 27; getExp = 90; getGold = 90;
+        maxHp = 20; atk = 5; def = 5; getExp = 20; getGold = 20;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Multiple Attacks", SkillType::Normal, static_cast<int>(atk * 0.5) });
