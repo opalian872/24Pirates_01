@@ -11,7 +11,7 @@ BossEnemy::BossEnemy(BossType type, int roomCount)
     {
     case BossType::SkeletonKing:
         engName = "Kernel Panic : The Skeleton King";
-        maxHp = 200; atk = 50; def = 50; getExp = 50; getGold = 50;
+        maxHp = 750; atk = 50; def = 50; getExp = 50; getGold = 50;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Heavy Strike", SkillType::Normal, static_cast<int>(atk * 1.5f) });
@@ -21,7 +21,7 @@ BossEnemy::BossEnemy(BossType type, int roomCount)
 
     case BossType::OrcKing:
         engName = "Logical Error : The Orc King";
-        maxHp = 200; atk = 50; def = 50; getExp = 50; getGold = 50;
+        maxHp = 750; atk = 50; def = 50; getExp = 50; getGold = 50;
 
         skills.push_back({ "Attack", SkillType::Normal, atk });
         skills.push_back({ "Heavy Strike", SkillType::Normal, static_cast<int>(atk * 1.5) });
